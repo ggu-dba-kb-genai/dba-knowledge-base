@@ -22,19 +22,19 @@ timestamp: '2026-06-20T06:41:41+00:00'
 The concepts of transfer learning and fine-tuning are covered comprehensively across multiple courses and sessions throughout the program:
 
 *   **[Emerging Digital Technologies](../courses/c1-emerging-digital-technologies.md)**
-    *   `[Session 13](../sessions/c1-emerging-digital-technologies-session-13.md)` — Discusses early concepts of model reuse and the performance landscape of deep neural adaptations.
+    *   [Session 13](../sessions/c1-emerging-digital-technologies-session-13.md) — Discusses early concepts of model reuse and the performance landscape of deep neural adaptations.
 *   **[Deep Learning](../courses/c3-deep-learning.md)**
-    *   `[Session 03](../sessions/c3-deep-learning-session-03.md)` & `[Session 04](../sessions/c3-deep-learning-session-04.md)` — Introduces weight update mechanics and basic convolutional feature hierarchies.
-    *   `[Session 09](../sessions/c3-deep-learning-session-09.md)` — Deepens understanding of architecture customization.
-    *   `[Session 12](../sessions/c3-deep-learning-session-12.md)` — Focuses on CNN-based transfer learning, comparing pre-trained models to task specialization (e.g., ImageNet to medical scan chest X-rays).
+    *   [Session 03](../sessions/c3-deep-learning-session-03.md) & [Session 04](../sessions/c3-deep-learning-session-04.md) — Introduces weight update mechanics and basic convolutional feature hierarchies.
+    *   [Session 09](../sessions/c3-deep-learning-session-09.md) — Deepens understanding of architecture customization.
+    *   [Session 12](../sessions/c3-deep-learning-session-12.md) — Focuses on CNN-based transfer learning, comparing pre-trained models to task specialization (e.g., ImageNet to medical scan chest X-rays).
 *   **[GenAI Pretrained Models](../courses/c4-genai-pretrained-models.md)**
-    *   `[Session 03](../sessions/c4-genai-pretrained-models-session-03.md)` — Explores adapting pretrained transformers to downstream tasks.
-    *   `[Session 07](../sessions/c4-genai-pretrained-models-session-07.md)` — Compares prompt engineering, RAG, and fine-tuning/PEFT from an engineering and mathematical perspective.
+    *   [Session 03](../sessions/c4-genai-pretrained-models-session-03.md) — Explores adapting pretrained transformers to downstream tasks.
+    *   [Session 07](../sessions/c4-genai-pretrained-models-session-07.md) — Compares prompt engineering, RAG, and fine-tuning/PEFT from an engineering and mathematical perspective.
 *   **[AI Project Design](../courses/c5-ai-project-design.md)**
-    *   `[Session 07](../sessions/c5-ai-project-design-session-07.md)` — Analyzes the executive build vs. buy trade-offs, TCO, and IP implications of full retraining versus LoRA.
-    *   `[Session 08](../sessions/c5-ai-project-design-session-08.md)` — Continues decision framework analysis for deploying fine-tuned models.
+    *   [Session 07](../sessions/c5-ai-project-design-session-07.md) — Analyzes the executive build vs. buy trade-offs, TCO, and IP implications of full retraining versus LoRA.
+    *   [Session 08](../sessions/c5-ai-project-design-session-08.md) — Continues decision framework analysis for deploying fine-tuned models.
 *   **[Responsible AI](../courses/c6-responsible-ai.md)**
-    *   `[Session 02](../sessions/c6-responsible-ai-session-02.md)` — Explores safety alignment, alignment fine-tuning, and mitigating bias during domain adaptation.
+    *   [Session 02](../sessions/c6-responsible-ai-session-02.md) — Explores safety alignment, alignment fine-tuning, and mitigating bias during domain adaptation.
 
 # Citations
 

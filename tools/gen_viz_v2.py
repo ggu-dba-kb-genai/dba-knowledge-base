@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import json, os
 
-bundle_json = open('/tmp/bundle.json').read()
+_HERE = os.path.dirname(os.path.abspath(__file__))
+bundle_json = open(os.path.join(_HERE, 'bundle.json'), encoding='utf-8').read()
 
 HEAD = r'''<!DOCTYPE html>
 <html lang="en">
@@ -1169,7 +1170,7 @@ mmCanvas.addEventListener('click', e => {
 </body>
 </html>'''
 
-out = '/home/sanjayg4/okf-research/dba_knowledge_viz_v2.html'
+out = os.path.abspath(os.path.join(_HERE, '..', 'docs', 'map.html'))
 with open(out, 'w', encoding='utf-8') as f:
     f.write(HEAD)
     f.write(bundle_json)
