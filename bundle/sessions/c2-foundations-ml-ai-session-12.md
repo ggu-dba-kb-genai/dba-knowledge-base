@@ -69,7 +69,7 @@ The second half of the session shifts focus to distance and similarity metrics, 
 - **Slides**: 
   - `Session 12 - (26 Oct 2025).pdf`
   - `Session12_Slides_2025-10-26.pdf`
-- **Recording**: Video ID `fCEwlBFQ3eg` (Available on YouTube)
+- **Recording**: Video ID [fCEwlBFQ3eg](https://www.youtube.com/watch?v=fCEwlBFQ3eg) (Available on YouTube)
 - **Chat**: Present (Active student participation regarding assignment submissions, leverage calculations, and coding environments)
 
 # Related

@@ -52,7 +52,7 @@ Simultaneously, the session's prepared slide materials introduce the theoretical
 
 - **Slides** — `Session_13_20251025_TimeSeries.pdf` (Focuses on Time Series Forecasting theory, formulas, and case study details).
 - **Chat** — Present and active during the session (discussing Azure setup, credit usage, and pipeline configuration troubleshooting).
-- **Recording** — `ogHKdZeb-XM` (Hands-on classification lab and pipeline execution in Azure ML Studio).
+- **Recording** — [ogHKdZeb-XM](https://www.youtube.com/watch?v=ogHKdZeb-XM) (Hands-on classification lab and pipeline execution in Azure ML Studio).
 
 # Related
 

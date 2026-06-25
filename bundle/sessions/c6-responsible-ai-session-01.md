@@ -68,7 +68,7 @@ The technical breakdown covers the transition of text from raw characters to bin
 - **Slides**: `Pre-read Case Study.pdf` (ContactWare & Salevation Technology Case Study)
 - **Other Files**: `Zoom Tips.pdf`
 - **Chat Transcript**: Yes, Zoom class chat active.
-- **Video Recording**: Video available on YouTube with ID `nN65MraAtQQ`.
+- **Video Recording**: Video available on YouTube with ID [nN65MraAtQQ](https://www.youtube.com/watch?v=nN65MraAtQQ).
 
 # Related
 

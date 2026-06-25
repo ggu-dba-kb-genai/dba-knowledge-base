@@ -58,7 +58,7 @@ Finally, the session explores the security landscape, detailing both the vulnera
 
 ## Materials
 
-- **Recording**: Available under Video ID `bXCUA_UY1Tg` ([YouTube Link](https://www.youtube.com/watch?v=bXCUA_UY1Tg)).
+- **Recording**: Available under Video ID [bXCUA_UY1Tg](https://www.youtube.com/watch?v=bXCUA_UY1Tg) ([YouTube Link](https://www.youtube.com/watch?v=bXCUA_UY1Tg)).
 - **Slides**: No slides are attached to this session's metadata. Dr. Raj committed to uploading these slides to the student portal post-session.
 - **Chat**: No chat logs are available for this session.
 
@@ -70,7 +70,7 @@ Finally, the session explores the security landscape, detailing both the vulnera
 
 ## Citations
 
-1. Emerging Digital Technologies - Session 05 Lecture Recording, University Course, Video ID: `bXCUA_UY1Tg`, Date: 2025-07-26.
+1. Emerging Digital Technologies - Session 05 Lecture Recording, University Course, Video ID: [bXCUA_UY1Tg](https://www.youtube.com/watch?v=bXCUA_UY1Tg), Date: 2025-07-26.
 2. Shor, P. W. (1994). "Algorithms for quantum computation: discrete logarithms and factoring." *Proceedings 35th Annual Symposium on Foundations of Computer Science*.
 3. Grover, L. K. (1996). "A fast quantum mechanical algorithm for database search." *Proceedings of the twenty-eighth annual ACM symposium on Theory of computing*.
 4. IBM Quantum. "Qiskit: An open-source SDK for working with quantum computers at the level of pulses, circuits, and application modules."

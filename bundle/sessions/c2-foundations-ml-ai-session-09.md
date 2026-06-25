@@ -63,7 +63,7 @@ The final portion of the session introduces **Decision Trees** as a highly inter
 # Materials
 - **Slides**: `Session09_Slides.pdf`
 - **Chat**: Present and active during the session.
-- **Recording**: Video ID `_jkzz7ouung`
+- **Recording**: Video ID [_jkzz7ouung](https://www.youtube.com/watch?v=_jkzz7ouung)
 
 # Related
 - Sibling Session: [Session 08: Logistic Regression & Model Evaluation](c2-foundations-ml-ai-session-08.md)

@@ -55,7 +55,7 @@ The session concludes with an exploration of hardware selection for AI. Dr. Sure
 
 # Materials
 
-- **Recording**: [Session 06 Video](https://www.youtube.com/watch?v=Gj63K0PX91c) (video ID: `Gj63K0PX91c`)
+- **Recording**: [Session 06 Video](https://www.youtube.com/watch?v=Gj63K0PX91c) (video ID: [Gj63K0PX91c](https://www.youtube.com/watch?v=Gj63K0PX91c))
 - **Slides**: No slides are associated with this session's metadata.
 - **Chat**: Chat log is not present for this session.
 

@@ -69,7 +69,7 @@ The modern frontier of blockchain is **Asset Tokenization**—the digital, virtu
 
 - **Slides**: `BlockchainForEnterprises_2025.pdf` (Dr. Praphul Chandra, 2025)
 - **Chat Present**: Yes
-- **Recording**: YouTube Video ID `85vXomiAxj0`
+- **Recording**: YouTube Video ID [85vXomiAxj0](https://www.youtube.com/watch?v=85vXomiAxj0)
 
 # Related
 

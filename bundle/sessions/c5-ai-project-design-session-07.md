@@ -49,7 +49,7 @@ Finally, the class explores real-world consulting pain points and solutions. The
   - `Session 7 - (25 Apr 2026).pdf`
   - `Session07_Slides_2026-04-25.pdf`
 - **Chat**: Present and active during live discussion.
-- **Recording**: YouTube video with ID `hDR1TvYE8Xo`.
+- **Recording**: YouTube video with ID [hDR1TvYE8Xo](https://www.youtube.com/watch?v=hDR1TvYE8Xo).
 
 # Related
 

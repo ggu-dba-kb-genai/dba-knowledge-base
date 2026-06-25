@@ -46,7 +46,7 @@ These concepts are illustrated through several real-world case studies from Dr. 
 
 - **Slides**: `Class01.pdf` (with auxiliary materials in `Class01+02.pdf`)
 - **Chat Log**: Present
-- **Video Recording**: Available on YouTube (ID: `Vxo95A60u-o`)
+- **Video Recording**: Available on YouTube (ID: [Vxo95A60u-o](https://www.youtube.com/watch?v=Vxo95A60u-o))
 
 # Related
 

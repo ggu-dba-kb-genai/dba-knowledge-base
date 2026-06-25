@@ -49,7 +49,7 @@ The core of the lecture outlines a structured framework for model diagnostics. *
 
 - **Slides**: `20251004_LinearRegression.pdf`
 - **In-Class Chat**: Active discussion on interpreting negative intercepts, statistical vs. practical significance, and the logistical timeline of course grading.
-- **Recording**: Video ID `-WB-j4R4Y7g` (accessible via `https://www.youtube.com/watch?v=-WB-j4R4Y7g`).
+- **Recording**: Video ID [-WB-j4R4Y7g](https://www.youtube.com/watch?v=-WB-j4R4Y7g) (accessible via `https://www.youtube.com/watch?v=-WB-j4R4Y7g`).
 
 # Related
 

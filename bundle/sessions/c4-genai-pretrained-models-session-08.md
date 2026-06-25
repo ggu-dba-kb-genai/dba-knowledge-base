@@ -71,7 +71,7 @@ To address the fragility of handcrafted prompts and mitigate the "hallucination 
 
 - **Slides**: `2026-02-22 Lecture.pdf`, `Session08_Lecture_2026-02-22.pdf`
 - **Chat**: Yes, student-instructor chat was present and highly interactive.
-- **Recording**: Available under YouTube stream ID `E00kuZEXgzU`
+- **Recording**: Available under YouTube stream ID [E00kuZEXgzU](https://www.youtube.com/watch?v=E00kuZEXgzU)
 
 # Related
 

@@ -58,7 +58,7 @@ Transitioning back to [Neural Network Architectures](../concepts/neural-network-
   - `20251123_DL_C8S1_AAN-Challenges-and-Resolutions.pdf` (Dr. Srinivasa Varadharajan Lakshminarasimhan — weight initialization, vanishing gradients, and optimizers)
   - `20251129_Bias-Variance-Tradeoff.pdf` (Dr. Srinivasa Varadharajan Lakshminarasimhan — bias-variance tradeoff and classical regularization)
 - **Chat**: Yes, student-teacher interactions documented (including audio checks and lab reminders).
-- **Video Recording**: YouTube video under ID `9OVy6zWjHIQ`.
+- **Video Recording**: YouTube video under ID [9OVy6zWjHIQ](https://www.youtube.com/watch?v=9OVy6zWjHIQ).
 
 # Related
 

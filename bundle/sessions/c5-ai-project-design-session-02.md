@@ -72,7 +72,7 @@ The second half of the lecture establishes a concrete methodology for the AI pro
 
 - **Chat Logs**: Active student discussion during group assignments and breakout room configurations.
 - **Breakout Rooms**: Ten distinct collaborative spaces utilized for domain-specific ideation.
-- **Video Recording**: Session 02 video available on YouTube under identifier `lSIPmJZVVdA`.
+- **Video Recording**: Session 02 video available on YouTube under identifier [lSIPmJZVVdA](https://www.youtube.com/watch?v=lSIPmJZVVdA).
 
 # Related
 

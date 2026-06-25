@@ -48,7 +48,7 @@ Additionally, the session covers the communication spectrum and protocols linkin
 
 # Materials
 
-* **Video Recording:** YouTube video with ID `pNM18F_M_R0` (available under resource `https://www.youtube.com/watch?v=pNM18F_M_R0`).
+* **Video Recording:** YouTube video with ID [pNM18F_M_R0](https://www.youtube.com/watch?v=pNM18F_M_R0) (available under resource `https://www.youtube.com/watch?v=pNM18F_M_R0`).
 * **Slides:** None available for this session.
 * **Chat Transcript:** None available for this session.
 

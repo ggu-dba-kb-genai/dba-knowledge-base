@@ -60,7 +60,7 @@ The session concludes with an exploration of model performance metrics and criti
 - **Built-in Dataset**: Animal Images Dataset (Cats, Dogs, Frogs from Open Image Dataset)
 - **Custom Dataset**: Zipped Brain Tumor Classification Dataset (positive/negative labels sourced from Kaggle)
 - **Interactive Chat**: Live discussions on selecting *Score Image Model* (for unstructured image pipelines) instead of the tabular *Score Model* component, and how to verify student credit balances under Cost Management / Education subscription.
-- **Recording**: Video session 06 is available (`RE2UX6rU-0I`).
+- **Recording**: Video session 06 is available ([RE2UX6rU-0I](https://www.youtube.com/watch?v=RE2UX6rU-0I)).
 
 # Related
 

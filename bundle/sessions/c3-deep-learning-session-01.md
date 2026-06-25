@@ -44,7 +44,7 @@ The lecture transitions these biological concepts into their mathematical equiva
 
 - **Slides**: `20251115_DL_C8S1_Introduction.pdf` (Introduction slide deck covering biological systems and perceptrons)
 - **Chat**: Yes, student-instructor chat was present during this live interactive session.
-- **Recordings**: YouTube video ID `wMFSkWTBGmQ`
+- **Recordings**: YouTube video ID [wMFSkWTBGmQ](https://www.youtube.com/watch?v=wMFSkWTBGmQ)
 
 # Related
 

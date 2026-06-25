@@ -56,7 +56,7 @@ Finally, the session dives into critical enterprise operational issues, includin
   - `2026-03-01 Lecture.pdf`
   - `Session10_Lecture_2026-03-01.pdf`
 - **Chat**: Available
-- **Recording**: YouTube video `pPPTswRSiBs` is available.
+- **Recording**: YouTube video [pPPTswRSiBs](https://www.youtube.com/watch?v=pPPTswRSiBs) is available.
 
 # Related
 

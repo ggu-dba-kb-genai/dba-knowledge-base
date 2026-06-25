@@ -83,7 +83,7 @@ To put Agile AI into practice, students mapped out a 3-sprint execution plan com
   - `Session 5 - (18 Apr 2026).pdf`
   - `Session05_Slides_2026-04-18.pdf`
 - **Chat**: Present (including student discussions about Accenture's risk models, Microsoft's Persian translation bug, and synthetic data generation).
-- **Video Recording**: YouTube Video `f8z5eR-1XDY`
+- **Video Recording**: YouTube Video [f8z5eR-1XDY](https://www.youtube.com/watch?v=f8z5eR-1XDY)
 
 # Related
 

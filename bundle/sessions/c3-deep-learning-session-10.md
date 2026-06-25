@@ -60,7 +60,7 @@ The technical portion of the session connects biological principles with digital
   - `20251214_C8S1_Intro-to-CV.pdf` — Explores human visual anatomy, biological perception, digital representations, and classical image-processing matrices.
   - `20251214_C8S1_CNN.pdf` — Introduces the mathematical mechanics of 2D convolutions, Neocognitron foundations, edge filters, and hierarchical feature learning.
 - **Chat**: Present (student debates on Jevons paradox, Gandhian economic models, API gateways to manage model bias, and recommended denoising tools).
-- **Recording**: Available on YouTube (Video ID: `MoPTsD21hO8`).
+- **Recording**: Available on YouTube (Video ID: [MoPTsD21hO8](https://www.youtube.com/watch?v=MoPTsD21hO8)).
 
 # Related
 

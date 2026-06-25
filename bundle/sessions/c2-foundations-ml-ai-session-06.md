@@ -70,7 +70,7 @@ The session also addresses practical solutions when linear regression assumption
 
 - **Slides**: `20251005_LinearRegression.pdf`
 - **Chat**: Present in the session archive.
-- **Recording**: YouTube Video ID `21KaSuYb9Ts`
+- **Recording**: YouTube Video ID [21KaSuYb9Ts](https://www.youtube.com/watch?v=21KaSuYb9Ts)
 
 # Related
 

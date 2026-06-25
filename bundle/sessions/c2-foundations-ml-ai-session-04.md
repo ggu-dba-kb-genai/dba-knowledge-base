@@ -66,7 +66,7 @@ Alongside the hands-on lab, the session's prepared materials (compiled by Dr. Sr
 
 - **Slides**: `Session_6_20250928_Lin-Regr.pdf` (Covers Simple Linear Regression theory, model assumptions, hypothesis testing, and diagnostics).
 - **Chat**: Present (student-instructor queries regarding PowerBI desktop access, file upload configurations, data type overrides, and chart interactivity).
-- **Recording**: Available on YouTube with video ID `MKcLXbQIAK0`.
+- **Recording**: Available on YouTube with video ID [MKcLXbQIAK0](https://www.youtube.com/watch?v=MKcLXbQIAK0).
 
 # Related
 

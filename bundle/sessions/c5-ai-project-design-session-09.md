@@ -61,7 +61,7 @@ The lecture illustrates critical readiness failures through several real-world a
   - `Seesion9.pdf`
   - `Session 9 - (2 May 2026).pdf`
 - **Chat**: Present and active (focusing on assignment details, peer support, and domain experience exchange).
-- **Recording**: Available under ID `yidgwHk8RnM`.
+- **Recording**: Available under ID [yidgwHk8RnM](https://www.youtube.com/watch?v=yidgwHk8RnM).
 
 # Related
 

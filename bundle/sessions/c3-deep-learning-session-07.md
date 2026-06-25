@@ -71,7 +71,7 @@ To contrast neural-network-based approaches with classical techniques, the sessi
 - **Slides**: 
   - `20251129_DL_C8S1_AutoEncoders.pdf` (Autoencoders)
   - `20251206_DL_C8S1_PCA.pdf` (Principal Component Analysis)
-- **Recording**: YouTube Video ID `_dv6HxbIngc`
+- **Recording**: YouTube Video ID [_dv6HxbIngc](https://www.youtube.com/watch?v=_dv6HxbIngc)
 - **Chat Present**: Yes
 
 # Related

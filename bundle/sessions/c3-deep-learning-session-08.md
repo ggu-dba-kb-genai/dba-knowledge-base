@@ -73,7 +73,7 @@ The second half of the lecture addresses **Entity Embeddings** for categorical d
   - `20251207_DL_C8S1_AutoEncoders.pdf` (Autoencoders, Denoising, and SegNet)
   - `20251207_Entity-Embeddings.pdf` (Categorical Embeddings, Rossmann Sales, and Recommenders)
 - **Class Chat**: Present
-- **Video Recording**: YouTube Video ID `-tMyrY68zEM`
+- **Video Recording**: YouTube Video ID [-tMyrY68zEM](https://www.youtube.com/watch?v=-tMyrY68zEM)
 
 # Related
 

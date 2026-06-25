@@ -55,7 +55,7 @@ Focusing on [Supervised Learning Foundations](../concepts/supervised-learning-fo
 - **Slides**:
   - `Session 01 - (20 Sep 2025).pdf`
   - `Session01_Slides_2025-09-20.pdf`
-- **Recording**: Available via YouTube identifier `KrV0BeHhNSc`.
+- **Recording**: Available via YouTube identifier [KrV0BeHhNSc](https://www.youtube.com/watch?v=KrV0BeHhNSc).
 - **Chat**: Not recorded for this session.
 
 # Related

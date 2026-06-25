@@ -85,7 +85,7 @@ To bypass the limits of standard frozen LLM brains, the lecture reviews alternat
 # Materials
 - **Slides:** `2026-03-07 Lecture.pdf`, `Session11_Lecture_2026-03-07.pdf`
 - **Class Chat:** Active discussion regarding global warming, water consumption in Indian data centers, and corporate training frameworks.
-- **Video Recording:** Available on YouTube under ID `6dU9yUsUSF4`
+- **Video Recording:** Available on YouTube under ID [6dU9yUsUSF4](https://www.youtube.com/watch?v=6dU9yUsUSF4)
 
 # Related
 - Sibling Session: [Session 10: Advancements in Pretrained LLMs & Fine-Tuning Patterns](c4-genai-pretrained-models-session-10.md)

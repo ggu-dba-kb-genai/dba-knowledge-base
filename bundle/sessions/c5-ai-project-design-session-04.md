@@ -82,7 +82,7 @@ Students collaborated to reconstruct vague requirements (e.g., "We need AI to au
   - `Session 4 - (12 Apr 2026).pdf`
   - `Session04_Slides_2026-04-12.pdf`
 - **Classroom Chat**: Active collaboration around rewriting weak statements, defining human-in-the-loop escalation paths, and debating unit-level OpEx constraints.
-- **Video Recording**: YouTube recording ID `zedlWnMwGpI` (available under `https://www.youtube.com/watch?v=zedlWnMwGpI`).
+- **Video Recording**: YouTube recording ID [zedlWnMwGpI](https://www.youtube.com/watch?v=zedlWnMwGpI) (available under `https://www.youtube.com/watch?v=zedlWnMwGpI`).
 
 # Related
 

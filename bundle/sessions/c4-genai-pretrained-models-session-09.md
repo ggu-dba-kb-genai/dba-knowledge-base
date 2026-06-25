@@ -75,7 +75,7 @@ On the practical side, the hands-on lab transitions students from closed-source,
 
 - **Slides:** `2026-02-28 Lecture.pdf` and `Session09_Lecture_2026-02-28.pdf` (covering reasoning, DSPy, and GraphRAG)
 - **Chat:** Chat was present during this live interactive lecture.
-- **Recordings:** Video session available via video ID `MNcMPaV01Tc`
+- **Recordings:** Video session available via video ID [MNcMPaV01Tc](https://www.youtube.com/watch?v=MNcMPaV01Tc)
 
 # Related
 

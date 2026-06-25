@@ -53,7 +53,7 @@ The lecture addresses the complex, messy realities of deploying RAG in productio
   - `Lect 05 - FineTuning and Rag.pdf`
   - `Lect 4 - Prompting and Metrics.pdf`
 - **Lecture Chat**: Interactive Q&A discussion was present throughout the session.
-- **Video Recording**: YouTube video available under ID `7nv49AhEimA`.
+- **Video Recording**: YouTube video available under ID [7nv49AhEimA](https://www.youtube.com/watch?v=7nv49AhEimA).
 
 # Related
 

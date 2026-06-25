@@ -50,7 +50,7 @@ To anchor these systems engineering concepts, students engage with an interactiv
 - **Slides**: `Online session 23-Aug-2025.pdf` (covering digital twin architectures, IoT networks, containerization, and modeling workflows).
 - **Interactive Simulation**: `Hospital Triaging Digital Twin (HTML)` (demonstrating agent-based queuing, pandemic load testing, and dashboard design verification).
 - **Chat**: Present (capturing industrial discussions, including oil and gas implementations like Shell's brownfield and greenfield deployments).
-- **Recording**: Video ID `7bIac8YyZMU` available.
+- **Recording**: Video ID [7bIac8YyZMU](https://www.youtube.com/watch?v=7bIac8YyZMU) available.
 
 ### Related
 - Sibling Session: [Session 09](c1-emerging-digital-technologies-session-09.md)

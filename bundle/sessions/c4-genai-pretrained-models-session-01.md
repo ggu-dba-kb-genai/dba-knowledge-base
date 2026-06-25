@@ -58,7 +58,7 @@ Additionally, the session highlights the physiological and physical constraints 
 
 - **Slides:** `2026-01-24 Lecture.pdf`, `Session01_Lecture_2026-01-24.pdf`
 - **Chat:** Present
-- **Video Recording:** Video ID `zvyCLFIuqbs` (YouTube)
+- **Video Recording:** Video ID [zvyCLFIuqbs](https://www.youtube.com/watch?v=zvyCLFIuqbs) (YouTube)
 
 # Related
 

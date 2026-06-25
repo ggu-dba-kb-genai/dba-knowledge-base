@@ -56,7 +56,7 @@ Finally, the session addresses model overfitting and generalization. Students ar
   * `Session 04 - (23 Nov 2025).pdf`
   * `Session04_Slides_2025-11-23.pdf`
 * **Chat**: Present (student feedback on pacing, and discussions regarding dying neurons, Leaky ReLU slopes, Ridge regularization, and the mathematics of gradient explosion).
-* **Recording**: Available via YouTube video ID `b8dJ8N3j3nQ`
+* **Recording**: Available via YouTube video ID [b8dJ8N3j3nQ](https://www.youtube.com/watch?v=b8dJ8N3j3nQ)
 
 # Related
 

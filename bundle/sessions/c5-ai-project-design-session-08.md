@@ -66,7 +66,7 @@ Finally, the session bridges theory and industry practice by discussing real-wor
 # Materials
 
 - **Chat Transcript:** A text chat log of student-instructor interactions, containing real-time questions regarding chunk overlaps, MongoDB vector searches, and custom evaluation libraries (DeepEval vs. Ragas).
-- **Video Recording:** A YouTube recording of the live session (video ID: `cT1GhSzseNg`).
+- **Video Recording:** A YouTube recording of the live session (video ID: [cT1GhSzseNg](https://www.youtube.com/watch?v=cT1GhSzseNg)).
 - *Note: No external slide deck or Jupyter Notebook files are registered in this session's metadata.*
 
 # Related

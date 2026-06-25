@@ -49,7 +49,7 @@ The second half of the session is dedicated to gamified ethical hacking and red-
   - `Session 6 - (19 Apr 2026).pdf`
   - `Session06_Slides_2026-04-19.pdf`
 - **Interactive Notebook:** A Python Colab notebook demonstrating API setup (Hugging Face, Groq, OpenAI) and the six core prompting styles.
-- **Recording:** Available on YouTube with ID `QrcwRu9MFXo`.
+- **Recording:** Available on YouTube with ID [QrcwRu9MFXo](https://www.youtube.com/watch?v=QrcwRu9MFXo).
 - **Chat:** The class session included active chat collaboration during the live hacking exercises.
 
 # Related

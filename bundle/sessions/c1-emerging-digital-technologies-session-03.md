@@ -54,7 +54,7 @@ Finally, non-traditional IoT applications in finance, agriculture, and urban pla
 
 - **Slides:** `Session03_Introduction.pdf`
 - **Chat:** Student chat discussion present.
-- **Video Recording:** YouTube video `MahuEonWB14`
+- **Video Recording:** YouTube video [MahuEonWB14](https://www.youtube.com/watch?v=MahuEonWB14)
 
 # Related
 

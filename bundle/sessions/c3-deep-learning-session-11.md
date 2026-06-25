@@ -54,7 +54,7 @@ The session also covers pooling operations (Max, Min, Average, and Sum pooling) 
 - **Slides**: 
   - `20251220_C8S1_CNN-1.pdf`
   - `20251220_C8S1_CNN-2.pdf`
-- **Recording**: Video ID `604-j9tdQQQ` is available.
+- **Recording**: Video ID [604-j9tdQQQ](https://www.youtube.com/watch?v=604-j9tdQQQ) is available.
 - **Chat**: Yes, student-professor discussions on crowdsourcing, filter sizing, and padding are captured.
 
 # Related

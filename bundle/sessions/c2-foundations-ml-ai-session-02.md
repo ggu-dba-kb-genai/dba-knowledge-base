@@ -65,7 +65,7 @@ The lecture also features a practical demonstration of transfer learning, showin
 - **Slides**:
   - `Session 02 - (21 Sep 2025).pdf`
   - `Session02_Slides_2025-09-21.pdf`
-- **Recording**: YouTube video (ID: `tLWt6TajUYU`)
+- **Recording**: YouTube video (ID: [tLWt6TajUYU](https://www.youtube.com/watch?v=tLWt6TajUYU))
 - **Chat**: No chat logs are available on disk for this session.
 
 # Related

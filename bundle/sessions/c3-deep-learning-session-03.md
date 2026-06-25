@@ -57,7 +57,7 @@ The session contrasts three major training regimes used to update model paramete
 - **Slides**: 
   - `Session 03 - (22 Nov 2025).pdf`
   - `Session03_Slides_2025-11-22.pdf`
-- **Lecture Recording**: YouTube video ID `IHBq-ZO2MIo`
+- **Lecture Recording**: YouTube video ID [IHBq-ZO2MIo](https://www.youtube.com/watch?v=IHBq-ZO2MIo)
 - **Class Chat Log**: Yes, interactive discussion included in the session archive.
 
 # Related

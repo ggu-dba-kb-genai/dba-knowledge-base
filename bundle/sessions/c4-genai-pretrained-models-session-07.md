@@ -72,7 +72,7 @@ Finally, the lecture addresses image understanding and multimodality using Visio
   - `2026-02-21 Lecture.pdf`
   - `Session07_Lecture_2026-02-21.pdf`
 - **Chat**: Present (including student links on video consistency metrics)
-- **Recording**: Available via YouTube video ID `QTdguYUB5iw`
+- **Recording**: Available via YouTube video ID [QTdguYUB5iw](https://www.youtube.com/watch?v=QTdguYUB5iw)
 
 # Related
 

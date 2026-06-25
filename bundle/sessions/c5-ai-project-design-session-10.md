@@ -61,7 +61,7 @@ The session concludes with real-world case studies of success (such as Amazon Q 
   - `Session10.pdf`
   - `Seesion10.pdf` (duplicate upload/typo in files)
 - **Chat**: Yes, a chat was present during the session.
-- **Recording**: Available via YouTube with video ID `XIwE78Bcu-o`.
+- **Recording**: Available via YouTube with video ID [XIwE78Bcu-o](https://www.youtube.com/watch?v=XIwE78Bcu-o).
 
 # Related
 
@@ -72,7 +72,7 @@ The session concludes with real-world case studies of success (such as Amazon Q 
 
 # Citations
 
-1. University Course Lecture: Session 10 on AI Project Design, Video ID: `XIwE78Bcu-o`, URL: `https://www.youtube.com/watch?v=XIwE78Bcu-o`.
+1. University Course Lecture: Session 10 on AI Project Design, Video ID: [XIwE78Bcu-o](https://www.youtube.com/watch?v=XIwE78Bcu-o), URL: `https://www.youtube.com/watch?v=XIwE78Bcu-o`.
 2. The Netflix Prize (Netflix $1 Million Recommendation System Challenge).
 3. Instructor-provided Research Paper: "Evaluation of Synthetic Data Quality" (shared in the class chat, 11MB PDF).
 4. Instructor-provided Research Paper: "Planner-Auditor Twin Framework" (shared in the class chat).
