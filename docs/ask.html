@@ -62,6 +62,13 @@ footer{flex-shrink:0;border-top:1px solid var(--border-warm);background:var(--bg
 .pill.ok{background:#dde9e0;color:var(--green)}.pill.no{background:#f0ddd5;color:var(--accent)}
 .note{font-size:.8rem;color:var(--muted);background:#faf6ec;border-left:3px solid var(--yellow);padding:8px 12px;border-radius:0 8px 8px 0;margin-top:16px}
 button.dl{background:var(--accent);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:.78rem;cursor:pointer;margin-top:8px}button.dl:hover{background:var(--accent2)}
+#keybar{display:flex;align-items:center;gap:10px;background:#f7efe2;border-bottom:1px solid var(--border-warm);padding:9px 22px;font-size:.85rem;color:var(--yellow);flex-shrink:0;flex-wrap:wrap}
+#keybar.hide{display:none}
+#keybar input{flex:0 1 220px;border:1px solid var(--border-warm);border-radius:7px;padding:6px 10px;font:13px system-ui;background:#fff}
+#keybar button{background:var(--accent);color:#fff;border:none;border-radius:7px;padding:6px 13px;font-size:.8rem;cursor:pointer}
+#keybar button:hover{background:var(--accent2)}
+#keybar a{color:var(--accent);font-weight:600;text-decoration:none}
+#keybar .kb-x{margin-left:auto;cursor:pointer;color:var(--text3);font-size:1.15rem;line-height:1}
 </style>
 </head>
 <body>
@@ -73,6 +80,14 @@ button.dl{background:var(--accent);color:#fff;border:none;border-radius:7px;padd
   <span class="badge" id="modebadge">mode: …</span>
   <button onclick="document.getElementById('drawer').classList.add('open')">⚙ Settings</button>
 </header>
+
+<div id="keybar">
+  <span>🔑 For summarized answers, add a free Gemini key:</span>
+  <input id="keybar-input" type="password" placeholder="AIza…" autocomplete="off">
+  <button id="keybar-save">Save</button>
+  <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Get a free key ›</a>
+  <span class="kb-x" id="keybar-x" title="dismiss">×</span>
+</div>
 
 <div id="chat"><div class="wrap" id="stream"></div></div>
 
@@ -91,20 +106,20 @@ button.dl{background:var(--accent);color:#fff;border:none;border-radius:7px;padd
 
   <label>Backend</label>
   <select id="backend">
-    <option value="auto">Auto — on-device first (recommended)</option>
-    <option value="builtin">Chrome built-in AI (on-device)</option>
+    <option value="auto">Auto — Gemini key first (recommended)</option>
     <option value="gemini">Gemini API (bring your own key)</option>
+    <option value="builtin">Chrome built-in AI (on-device · experimental)</option>
     <option value="search">Search only (no LLM)</option>
   </select>
 
-  <label>Gemini API key <span style="font-weight:400;color:var(--text3)">(stored locally only)</span></label>
+  <label>Gemini API key <span style="font-weight:400;color:var(--text3)">— <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">get a free key ›</a> · stored locally only</span></label>
   <input id="apikey" type="password" placeholder="AIza…" autocomplete="off">
 
   <label>Gemini model</label>
   <input id="model" type="text" value="gemini-2.5-flash">
   <p class="hint">Model names change over time — edit if this one isn't available to your key. The key never leaves your browser (calls go straight to Google).</p>
 
-  <div class="note"><b>On-device AI (default, no key):</b> Chrome runs Gemini Nano locally — private, free, works offline. First use downloads the model once (a few GB). If it shows &ldquo;not supported&rdquo;, you need a recent Chrome and may need to enable it: open <code>chrome://flags</code>, turn on <i>Prompt API for Gemini Nano</i> + <i>optimization-guide on-device model</i>, relaunch. Check status at <code>chrome://on-device-internals</code>.</div>
+  <div class="note"><b>On-device AI (advanced · experimental):</b> Optional no-key path — Chrome runs Gemini Nano locally (private, free), but needs setup and capable hardware. First use downloads the model once (a few GB). If it shows &ldquo;not supported&rdquo;, you need a recent Chrome and may need to enable it: open <code>chrome://flags</code>, turn on <i>Prompt API for Gemini Nano</i> + <i>optimization-guide on-device model</i>, relaunch. Check status at <code>chrome://on-device-internals</code>.</div>
 
   <div class="status-line" id="diag"></div>
 </aside>
@@ -143,14 +158,13 @@ const SUGGESTIONS = [
   $("#apikey").value = localStorage.getItem("kb_gemini_key") || "";
   $("#backend").value = localStorage.getItem("kb_backend") || "auto";
   $("#model").value = localStorage.getItem("kb_model") || "gemini-2.5-flash";
+  showKeybar();
   await refreshMode();
-  const a0 = await Builtin.availability();
   const _m = await pickMode();
-  let intro = `<p>Ask me anything about the DBA knowledge base — <b>${KB.stats().nodes} nodes</b> across six courses. Active mode is top-right.</p>`;
-  if (_m.mode === "builtin") intro += `<p style="font-size:.86rem;color:var(--muted)"><b>On-device AI active</b> (Gemini Nano) — private, no key, no cloud. I summarize and cite sources.</p>`;
-  else if (a0 === "downloadable") intro += `<p style="font-size:.86rem;color:var(--muted)">Your browser supports <b>on-device AI</b> — private, no key. <button class="dl" onclick="enableBuiltin()">⬇ Enable it (one-time download)</button> or use search now.</p>`;
-  else if (_m.mode === "gemini") intro += `<p style="font-size:.86rem;color:var(--muted)"><b>Gemini active</b> — summarized, grounded answers with citations.</p>`;
-  else intro += `<p style="font-size:.86rem;color:var(--muted)">Running in <b>search mode</b> — on-device AI isn't available in this browser. For summaries, see on-device setup or add a Gemini key in ⚙ Settings.</p>`;
+  let intro = `<p>Ask me anything about the DBA knowledge base — <b>${KB.stats().nodes} nodes</b> across six courses.</p>`;
+  if (_m.mode === "gemini") intro += `<p style="font-size:.86rem;color:var(--muted)"><b>Gemini active</b> — summarized, grounded answers with citations.</p>`;
+  else if (_m.mode === "builtin") intro += `<p style="font-size:.86rem;color:var(--muted)"><b>On-device AI active</b> — private, no key.</p>`;
+  else intro += `<p style="font-size:.86rem;color:var(--muted)">You're in <b>search mode</b> (grounded extracts). For summarized answers, add a free Gemini key — it stays in your browser. <button class="dl" onclick="focusKey()">🔑 Add Gemini key</button></p>`;
   addMsg("bot", intro);
 })();
 
@@ -159,9 +173,34 @@ const SUGGESTIONS = [
     localStorage.setItem("kb_backend", $("#backend").value);
     localStorage.setItem("kb_gemini_key", $("#apikey").value.trim());
     localStorage.setItem("kb_model", $("#model").value.trim());
-    refreshMode();
+    refreshMode(); showKeybar();
   })
 );
+
+// ---------- key bar (prominent BYO-key entry) ----------
+function showKeybar() {
+  const has = (localStorage.getItem("kb_gemini_key") || "").trim();
+  const dismissed = localStorage.getItem("kb_keybar_dismiss") === "1";
+  $("#keybar").classList.toggle("hide", !!has || dismissed);
+}
+function saveKeybar() {
+  const v = $("#keybar-input").value.trim();
+  if (!v) { $("#keybar-input").focus(); return; }
+  $("#apikey").value = v;
+  localStorage.setItem("kb_gemini_key", v);
+  localStorage.setItem("kb_backend", "auto"); $("#backend").value = "auto";
+  $("#keybar").classList.add("hide");
+  refreshMode();
+  addMsg("bot", "✅ Gemini key saved — summarized, grounded answers are on. Ask away.");
+}
+function focusKey() {
+  if (!$("#keybar").classList.contains("hide")) { $("#keybar-input").focus(); return; }
+  document.getElementById("drawer").classList.add("open");
+  setTimeout(() => $("#apikey").focus(), 150);
+}
+$("#keybar-save").onclick = saveKeybar;
+$("#keybar-input").addEventListener("keydown", (e) => { if (e.key === "Enter") saveKeybar(); });
+$("#keybar-x").onclick = () => { localStorage.setItem("kb_keybar_dismiss", "1"); $("#keybar").classList.add("hide"); };
 
 // ---------- backend detection (Chrome built-in AI / Gemini Nano) ----------
 const Builtin = {
@@ -206,10 +245,10 @@ async function pickMode() {
     const a = await Builtin.availability();
     return (a === "available" || a === "downloadable" || a === "downloading") ? { mode: "builtin", avail: a } : { mode: "search", reason: "built-in " + a };
   }
-  // auto — prefer on-device ONLY if already downloaded (never surprise-download)
+  // auto — BYO Gemini key first (recommended); on-device only if already present; else search
+  if (key) return { mode: "gemini", key };
   const a = await Builtin.availability();
   if (a === "available") return { mode: "builtin", avail: a };
-  if (key) return { mode: "gemini", key };
   return { mode: "search", builtinAvail: a };
 }
 
@@ -281,7 +320,7 @@ function builtinSetupHelp(msg) {
   </div>`;
 }
 function modeBanner() {
-  return `<div class="trace" style="background:#faf6ec;border-left:3px solid var(--yellow);padding:6px 10px;border-radius:0 6px 6px 0;color:var(--yellow)">🔍 Search mode (no LLM) — extractive results. Enable on-device AI (no key) or add a Gemini key in ⚙ Settings for summarized answers.</div>`;
+  return `<div class="trace" style="background:#faf6ec;border-left:3px solid var(--yellow);padding:6px 10px;border-radius:0 6px 6px 0;color:var(--yellow)">🔍 Search mode (no LLM) — extractive results. Add a free Gemini key (top bar or ⚙ Settings) for summarized answers.</div>`;
 }
 function firstParagraph(body) {
   if (!body) return "";
