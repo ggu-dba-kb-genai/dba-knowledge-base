@@ -1,6 +1,6 @@
 # DBA Knowledge Base
 
-> An open, AI-augmented knowledge base for a **Doctor of Business Administration (DBA)** program — six graduate courses on emerging digital technologies, machine learning, deep learning, generative AI, AI project design, and responsible AI — expressed in the **Open Knowledge Format (OKF)** and published as a navigable knowledge graph.
+> An open, AI-augmented knowledge base for a **Doctor of Business Administration (DBA) in Emerging Technologies, Generative AI & AI** — six doctoral courses on emerging digital technologies, machine learning, deep learning, generative AI, AI project design, and responsible AI — expressed in the **Open Knowledge Format (OKF)** and published as a navigable knowledge graph.
 
 **🌐 Live site:** https://ggu-dba-kb-genai.github.io/dba-knowledge-base/
 **🗺️ Knowledge map:** https://ggu-dba-kb-genai.github.io/dba-knowledge-base/map.html
