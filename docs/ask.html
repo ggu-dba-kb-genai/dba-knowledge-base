@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask the DBA Knowledge Base</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="kb-tools.js"></script>
+<style>
+:root{
+  --bg:#f5f4ed;--bg2:#faf9f5;--bg3:#e8e6dc;--border:#f0eee6;--border-warm:#e8e6dc;
+  --accent:#c96442;--accent2:#d97757;--green:#2a6b42;--yellow:#9a6520;--red:#b53333;
+  --text:#141413;--muted:#5e5d59;--text3:#87867f;--text-light:#b0aea5;--dark:#141413;--dark2:#30302e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+h1,h2,h3{font-family:Georgia,'Anthropic Serif',serif;font-weight:500}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.86em;background:var(--bg3);padding:1px 5px;border-radius:4px;color:#6a4a2a}
+header{background:var(--dark);color:var(--bg);padding:14px 22px;display:flex;align-items:center;gap:14px;border-bottom:3px solid var(--accent);flex-shrink:0}
+header h1{font-size:1.15rem;color:#faf9f5}
+header .sub{font-size:.72rem;color:var(--text-light);letter-spacing:.08em;text-transform:uppercase}
+header .spacer{flex:1}
+header .badge{font-size:.7rem;background:var(--dark2);color:var(--text-light);padding:4px 10px;border-radius:20px}
+header button{background:none;border:1px solid #4a4a47;color:var(--text-light);padding:5px 12px;border-radius:7px;font-size:.78rem;cursor:pointer}
+header button:hover{border-color:var(--accent2);color:#fff}
+#chat{flex:1;overflow-y:auto;padding:26px 0}
+.wrap{max-width:780px;margin:0 auto;padding:0 22px}
+.msg{margin-bottom:22px}
+.msg .who{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:650;margin-bottom:6px}
+.msg.user .who{color:var(--muted)}.msg.bot .who{color:var(--accent)}
+.msg.user .bubble{background:var(--bg3);border-radius:12px;padding:12px 16px;display:inline-block;max-width:90%}
+.msg.bot .bubble{background:var(--bg2);border:1px solid var(--border-warm);border-radius:12px;padding:16px 18px;box-shadow:rgba(0,0,0,.05) 0 4px 24px}
+.bubble p{margin:0 0 10px}.bubble p:last-child{margin-bottom:0}
+.bubble h1,.bubble h2,.bubble h3{font-size:1.05rem;color:var(--text);margin:10px 0 6px}
+.bubble ul,.bubble ol{margin:0 0 10px;padding-left:22px}.bubble li{margin-bottom:4px}
+.trace{font-size:.74rem;color:var(--text3);margin:8px 0 4px;font-family:ui-monospace,monospace}
+.trace .t{background:#efe9da;color:var(--yellow);padding:1px 7px;border-radius:5px;margin-right:5px}
+.cites{margin-top:12px;padding-top:10px;border-top:1px dashed var(--border-warm);display:flex;flex-wrap:wrap;gap:7px}
+.cite{font-size:.74rem;background:var(--bg);border:1px solid var(--border-warm);border-radius:18px;padding:3px 11px;color:var(--muted)}
+.cite b{color:var(--accent);font-weight:600}
+.cite .ty{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-left:4px}
+footer{flex-shrink:0;border-top:1px solid var(--border-warm);background:var(--bg2);padding:14px 0}
+.composer{max-width:780px;margin:0 auto;padding:0 22px;display:flex;gap:10px}
+#q{flex:1;border:1px solid var(--border-warm);border-radius:10px;padding:12px 14px;font:15px system-ui;background:#fff;resize:none}
+#q:focus{outline:none;border-color:var(--accent)}
+#send{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:0 20px;font-weight:600;cursor:pointer}
+#send:disabled{opacity:.5;cursor:default}
+.suggest{max-width:780px;margin:8px auto 0;padding:0 22px;display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-size:.78rem;background:var(--bg3);border:1px solid var(--border-warm);border-radius:18px;padding:4px 12px;cursor:pointer;color:var(--muted)}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+/* settings drawer */
+#drawer{position:fixed;top:0;right:0;height:100vh;width:340px;background:var(--bg2);border-left:1px solid var(--border-warm);box-shadow:rgba(0,0,0,.12) -8px 0 30px;transform:translateX(100%);transition:transform .22s;z-index:20;padding:24px;overflow-y:auto}
+#drawer.open{transform:translateX(0)}
+#drawer h2{font-size:1.1rem;color:var(--accent);margin-bottom:6px}
+#drawer label{display:block;font-size:.78rem;font-weight:650;color:var(--muted);margin:16px 0 5px}
+#drawer select,#drawer input{width:100%;border:1px solid var(--border-warm);border-radius:8px;padding:9px 11px;font:14px system-ui;background:#fff}
+#drawer .hint{font-size:.74rem;color:var(--text3);margin-top:6px;line-height:1.5}
+#drawer .close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.3rem;color:var(--muted);cursor:pointer}
+.status-line{font-size:.74rem;color:var(--text3);margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.pill{display:inline-block;font-size:.66rem;font-weight:700;padding:1px 7px;border-radius:5px}
+.pill.ok{background:#dde9e0;color:var(--green)}.pill.no{background:#f0ddd5;color:var(--accent)}
+.note{font-size:.8rem;color:var(--muted);background:#faf6ec;border-left:3px solid var(--yellow);padding:8px 12px;border-radius:0 8px 8px 0;margin-top:16px}
+button.dl{background:var(--accent);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:.78rem;cursor:pointer;margin-top:8px}button.dl:hover{background:var(--accent2)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Ask the DBA KB</h1>
+  <span class="sub" id="kbstat">loading…</span>
+  <span class="spacer"></span>
+  <span class="badge" id="modebadge">mode: …</span>
+  <button onclick="document.getElementById('drawer').classList.add('open')">⚙ Settings</button>
+</header>
+
+<div id="chat"><div class="wrap" id="stream"></div></div>
+
+<footer>
+  <div class="composer">
+    <textarea id="q" rows="1" placeholder="Ask about courses, sessions, concepts, assignments…"></textarea>
+    <button id="send">Ask</button>
+  </div>
+  <div class="suggest" id="suggest"></div>
+</footer>
+
+<aside id="drawer">
+  <button class="close" onclick="document.getElementById('drawer').classList.remove('open')">×</button>
+  <h2>Settings</h2>
+  <p class="hint">Progressive backends. Falls back gracefully — keyword search always works with zero setup.</p>
+
+  <label>Backend</label>
+  <select id="backend">
+    <option value="auto">Auto — on-device first (recommended)</option>
+    <option value="builtin">Chrome built-in AI (on-device)</option>
+    <option value="gemini">Gemini API (bring your own key)</option>
+    <option value="search">Search only (no LLM)</option>
+  </select>
+
+  <label>Gemini API key <span style="font-weight:400;color:var(--text3)">(stored locally only)</span></label>
+  <input id="apikey" type="password" placeholder="AIza…" autocomplete="off">
+
+  <label>Gemini model</label>
+  <input id="model" type="text" value="gemini-2.5-flash">
+  <p class="hint">Model names change over time — edit if this one isn't available to your key. The key never leaves your browser (calls go straight to Google).</p>
+
+  <div class="note"><b>On-device AI (default, no key):</b> Chrome runs Gemini Nano locally — private, free, works offline. First use downloads the model once (a few GB). If it shows &ldquo;not supported&rdquo;, you need a recent Chrome and may need to enable it: open <code>chrome://flags</code>, turn on <i>Prompt API for Gemini Nano</i> + <i>optimization-guide on-device model</i>, relaunch. Check status at <code>chrome://on-device-internals</code>.</div>
+
+  <div class="status-line" id="diag"></div>
+</aside>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const stream = $("#stream");
+let busy = false;
+
+const SYSTEM = `You are a tutor for an open DBA (Doctor of Business Administration) knowledge base on Emerging Technologies, Generative AI & AI. Answer ONLY from the knowledge base using the provided tools. Always call a tool before answering an open question — start with search_knowledge_base. Ground every claim in retrieved content and name the source nodes. If the KB doesn't cover something, say so plainly rather than inventing. Be concise and structured.`;
+
+const SUGGESTIONS = [
+  "Explain the DARWIN framework",
+  "Which sessions cover RLHF?",
+  "Outline the Responsible AI course",
+  "What's the rubric for the C6 assignment?",
+  "How does prompt engineering connect to agentic AI?",
+];
+
+// ---------- boot ----------
+(async function () {
+  try {
+    await KB.load();
+    const s = KB.stats();
+    $("#kbstat").textContent = `${s.nodes} nodes · ${s.edges} edges`;
+  } catch (e) {
+    $("#kbstat").textContent = "data load failed";
+    addMsg("bot", "⚠️ Couldn't load `kb-data.json`. This page must be served over HTTP (GitHub Pages or a local server), not opened as a file://.");
+  }
+  SUGGESTIONS.forEach((t) => {
+    const c = document.createElement("span"); c.className = "chip"; c.textContent = t;
+    c.onclick = () => { $("#q").value = t; ask(); };
+    $("#suggest").appendChild(c);
+  });
+  // restore settings
+  $("#apikey").value = localStorage.getItem("kb_gemini_key") || "";
+  $("#backend").value = localStorage.getItem("kb_backend") || "auto";
+  $("#model").value = localStorage.getItem("kb_model") || "gemini-2.5-flash";
+  await refreshMode();
+  const a0 = await Builtin.availability();
+  const _m = await pickMode();
+  let intro = `<p>Ask me anything about the DBA knowledge base — <b>${KB.stats().nodes} nodes</b> across six courses. Active mode is top-right.</p>`;
+  if (_m.mode === "builtin") intro += `<p style="font-size:.86rem;color:var(--muted)"><b>On-device AI active</b> (Gemini Nano) — private, no key, no cloud. I summarize and cite sources.</p>`;
+  else if (a0 === "downloadable") intro += `<p style="font-size:.86rem;color:var(--muted)">Your browser supports <b>on-device AI</b> — private, no key. <button class="dl" onclick="enableBuiltin()">⬇ Enable it (one-time download)</button> or use search now.</p>`;
+  else if (_m.mode === "gemini") intro += `<p style="font-size:.86rem;color:var(--muted)"><b>Gemini active</b> — summarized, grounded answers with citations.</p>`;
+  else intro += `<p style="font-size:.86rem;color:var(--muted)">Running in <b>search mode</b> — on-device AI isn't available in this browser. For summaries, see on-device setup or add a Gemini key in ⚙ Settings.</p>`;
+  addMsg("bot", intro);
+})();
+
+["backend", "apikey", "model"].forEach((id) =>
+  $("#" + id).addEventListener("change", () => {
+    localStorage.setItem("kb_backend", $("#backend").value);
+    localStorage.setItem("kb_gemini_key", $("#apikey").value.trim());
+    localStorage.setItem("kb_model", $("#model").value.trim());
+    refreshMode();
+  })
+);
+
+// ---------- backend detection (Chrome built-in AI / Gemini Nano) ----------
+const Builtin = {
+  _session: null, _noSystem: false,
+  api() { return self.LanguageModel || (self.ai && self.ai.languageModel) || null; },
+  norm(a) { return ({ readily: "available", "after-download": "downloadable", no: "unavailable" })[a] || a || "unsupported"; },
+  async availability() {
+    const api = this.api(); if (!api) return "unsupported";
+    try {
+      if (api.availability) return this.norm(await api.availability());
+      if (api.capabilities) return this.norm((await api.capabilities()).available);
+    } catch (e) {}
+    return "unsupported";
+  },
+  async ensure(onProgress) {
+    if (this._session) return this._session;
+    const api = this.api(); if (!api) throw new Error("Built-in AI not supported in this browser.");
+    const monitor = (m) => m && m.addEventListener && m.addEventListener("downloadprogress", (e) => {
+      const p = e.loaded <= 1 ? e.loaded : e.loaded / (e.total || 1);
+      onProgress && onProgress(Math.max(0, Math.min(100, Math.round(p * 100))));
+    });
+    const attempts = [
+      { initialPrompts: [{ role: "system", content: SYSTEM }], monitor },
+      { systemPrompt: SYSTEM, monitor },
+      { monitor },
+    ];
+    let err;
+    for (let i = 0; i < attempts.length; i++) {
+      try { this._session = await api.create(attempts[i]); this._noSystem = (i === 2); return this._session; }
+      catch (e) { err = e; }
+    }
+    throw err || new Error("Could not create on-device session.");
+  },
+};
+
+async function pickMode() {
+  const choice = $("#backend").value;
+  const key = ($("#apikey").value || "").trim();
+  if (choice === "search") return { mode: "search" };
+  if (choice === "gemini") return key ? { mode: "gemini", key } : { mode: "search", reason: "no key" };
+  if (choice === "builtin") {
+    const a = await Builtin.availability();
+    return (a === "available" || a === "downloadable" || a === "downloading") ? { mode: "builtin", avail: a } : { mode: "search", reason: "built-in " + a };
+  }
+  // auto — prefer on-device ONLY if already downloaded (never surprise-download)
+  const a = await Builtin.availability();
+  if (a === "available") return { mode: "builtin", avail: a };
+  if (key) return { mode: "gemini", key };
+  return { mode: "search", builtinAvail: a };
+}
+
+async function enableBuiltin() {
+  $("#backend").value = "builtin"; localStorage.setItem("kb_backend", "builtin");
+  const bot = addMsg("bot", "Preparing on-device model…");
+  try {
+    await Builtin.ensure((pct) => { bot.querySelector(".bubble").innerHTML = `⬇ Downloading on-device model… <b>${pct}%</b><br><span style="font-size:.8rem;color:var(--text3)">One-time download. Stays on your machine.</span>`; });
+    bot.querySelector(".bubble").innerHTML = "✅ On-device AI ready — no key, no cloud, private. Ask away.";
+  } catch (e) {
+    bot.querySelector(".bubble").innerHTML = "⚠️ " + escapeHtml(String(e.message || e)) + "<br><span style='font-size:.85rem;color:var(--muted)'>Staying in search mode. See on-device setup in ⚙ Settings.</span>";
+    $("#backend").value = "auto"; localStorage.setItem("kb_backend", "auto");
+  }
+  refreshMode();
+}
+
+async function refreshMode() {
+  const key = ($("#apikey").value || "").trim();
+  const m = await pickMode();
+  const label = { builtin: "on-device (Gemini Nano)", gemini: "Gemini API", search: "keyword search" }[m.mode];
+  $("#modebadge").textContent = "mode: " + label;
+  const a = await Builtin.availability();
+  const map = { available: ["ok", "ready"], downloadable: ["no", "1-time download needed"], downloading: ["no", "downloading…"], unavailable: ["no", "unavailable"], unsupported: ["no", "not supported"] };
+  const pf = map[a] || ["no", a];
+  let html =
+    `On-device AI: <span class="pill ${pf[0]}">${pf[1]}</span><br>` +
+    `Gemini key: <span class="pill ${key ? "ok" : "no"}">${key ? "set" : "none"}</span><br>` +
+    `Active: <b>${label}</b>`;
+  if (a === "downloadable") html += `<br><button class="dl" onclick="enableBuiltin()">⬇ Enable on-device AI (one-time)</button>`;
+  $("#diag").innerHTML = html;
+}
+
+// ---------- ask ----------
+$("#send").onclick = ask;
+$("#q").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ask(); } });
+
+async function ask() {
+  const q = $("#q").value.trim();
+  if (!q || busy) return;
+  $("#q").value = "";
+  addMsg("user", escapeHtml(q), true);
+  busy = true; $("#send").disabled = true;
+  const bot = addMsg("bot", "…");
+  try {
+    const m = await pickMode();
+    if (m.mode === "gemini") await runGemini(q, m, bot);
+    else if (m.mode === "builtin") await runBuiltin(q, m, bot);
+    else await runSearch(q, bot);
+  } catch (e) {
+    bot.querySelector(".bubble").innerHTML = "⚠️ " + escapeHtml(String(e));
+  }
+  busy = false; $("#send").disabled = false;
+  $("#chat").scrollTop = $("#chat").scrollHeight;
+}
+
+// ---- search-only (extractive summary; always works) ----
+function modeBanner() {
+  return `<div class="trace" style="background:#faf6ec;border-left:3px solid var(--yellow);padding:6px 10px;border-radius:0 6px 6px 0;color:var(--yellow)">🔍 Search mode (no LLM) — extractive results. Enable on-device AI (no key) or add a Gemini key in ⚙ Settings for summarized answers.</div>`;
+}
+function firstParagraph(body) {
+  if (!body) return "";
+  for (const chunk of body.split(/\n\s*\n/)) {
+    const t = chunk.trim();
+    if (t && !t.startsWith("#") && !t.startsWith("|") && t.length > 40) return t.replace(/\s+/g, " ").slice(0, 440);
+  }
+  return "";
+}
+function extractPoints(body, n) {
+  if (!body) return [];
+  const pts = [];
+  for (const line of body.split("\n")) {
+    const h = line.match(/^#{2,4}\s+(.*)/);
+    if (h) { const t = h[1].replace(/[*_`]/g, "").trim(); if (t.length > 3 && !/^(related|citations|materials|references|sources)/i.test(t)) pts.push(t); }
+    if (pts.length >= n) break;
+  }
+  if (pts.length < 2) {
+    for (const line of body.split("\n")) {
+      const b = line.match(/^\s*[-*]\s+(.*)/);
+      if (b) { const t = b[1].replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/[*_`]/g, "").trim(); if (t.length > 8) pts.push(t.slice(0, 150)); }
+      if (pts.length >= n) break;
+    }
+  }
+  return pts.slice(0, n);
+}
+function runSearch(q, bot) {
+  const r = KB.tools.search_knowledge_base({ query: q, limit: 6 });
+  const bubble = bot.querySelector(".bubble");
+  if (!r.results.length) { bubble.innerHTML = modeBanner() + "<p>No matches in the knowledge base for that. The KB covers six DBA courses: emerging digital technologies, ML/AI foundations, deep learning, generative AI, AI project design, and responsible AI.</p>"; return; }
+  const top = r.results[0];
+  const n = KB.tools.get_node({ id: top.id });
+  const lead = firstParagraph(n.body) || n.description || top.snippet;
+  const points = extractPoints(n.body, 5);
+  let html = modeBanner();
+  html += `<p><b>${escapeHtml(top.label)}</b> <span style="color:var(--text3)">· ${top.type}</span></p>`;
+  html += `<p>${escapeHtml(lead)}</p>`;
+  if (points.length) { html += `<p style="color:var(--muted);font-size:.85rem;margin-bottom:4px">In this node:</p><ul>`; for (const pt of points) html += `<li>${escapeHtml(pt)}</li>`; html += "</ul>"; }
+  if (r.results.length > 1) { html += `<p style="color:var(--muted);font-size:.85rem;margin:10px 0 4px">Related matches:</p><ul>`; for (const h of r.results.slice(1)) html += `<li><a href="${h.url}">${escapeHtml(h.label)}</a> <span class="ty">${h.type}</span></li>`; html += "</ul>"; }
+  bubble.innerHTML = html;
+  renderCites(bot, r.results.map((h) => h.id));
+}
+
+// ---- Chrome built-in / Gemini Nano (on-device RAG: retrieve → answer) ----
+async function runBuiltin(q, m, bot) {
+  let session;
+  try {
+    session = await Builtin.ensure((pct) => { bot.querySelector(".bubble").innerHTML = `⬇ Downloading on-device model… <b>${pct}%</b> <span style="font-size:.8rem;color:var(--text3)">(one-time)</span>`; });
+  } catch (e) {
+    bot.querySelector(".bubble").innerHTML = "⚠️ On-device AI unavailable — using search instead.<br>";
+    return runSearch(q, bot);
+  }
+  const ctx = buildContext(q, 5);
+  setTrace(bot, ["search_knowledge_base"]);
+  const sys = Builtin._noSystem ? SYSTEM + "\n\n" : "";
+  const prompt = `${sys}Question: ${q}\n\nKnowledge base excerpts:\n${ctx.text}\n\nAnswer the question using ONLY these excerpts. If they do not contain the answer, say the knowledge base does not cover it rather than guessing. Cite the node titles you used.`;
+  let out = "";
+  try {
+    if (session.promptStreaming) {
+      for await (const chunk of session.promptStreaming(prompt)) {
+        out = chunk.length >= out.length && chunk.startsWith(out) ? chunk : out + chunk; // cumulative or delta
+        bot.querySelector(".bubble").innerHTML = marked.parse(out);
+      }
+    } else {
+      out = await session.prompt(prompt);
+      bot.querySelector(".bubble").innerHTML = marked.parse(out);
+    }
+  } catch (e) {
+    bot.querySelector(".bubble").innerHTML = "⚠️ On-device generation failed — using search instead.<br>";
+    return runSearch(q, bot);
+  }
+  renderCites(bot, ctx.ids);
+}
+
+// ---- Gemini (real function-calling loop) ----
+async function runGemini(q, m, bot) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${$("#model").value.trim()}:generateContent?key=${encodeURIComponent(m.key)}`;
+  const contents = [{ role: "user", parts: [{ text: q }] }];
+  const used = new Set(); const traced = [];
+  for (let step = 0; step < 6; step++) {
+    const body = {
+      system_instruction: { parts: [{ text: SYSTEM }] },
+      contents,
+      tools: [{ function_declarations: KB.TOOL_SCHEMAS }],
+    };
+    const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    if (!res.ok) { bot.querySelector(".bubble").innerHTML = "⚠️ Gemini API error " + res.status + ". Check key/model in Settings, or switch to Search-only."; return; }
+    const data = await res.json();
+    const parts = ((data.candidates || [])[0] || {}).content?.parts || [];
+    const calls = parts.filter((p) => p.functionCall);
+    if (calls.length) {
+      contents.push({ role: "model", parts });
+      const responses = [];
+      for (const c of calls) {
+        const { name, args } = c.functionCall;
+        traced.push(name); setTrace(bot, traced);
+        const result = KB.call(name, args || {});
+        collectIds(result, used);
+        responses.push({ functionResponse: { name, response: { result } } });
+      }
+      contents.push({ role: "user", parts: responses });
+      continue;
+    }
+    const text = parts.map((p) => p.text || "").join("");
+    bot.querySelector(".bubble").innerHTML = marked.parse(text || "(no answer)");
+    renderCites(bot, [...used]);
+    return;
+  }
+  bot.querySelector(".bubble").innerHTML += "<p style='color:var(--text3)'>(stopped after max tool steps)</p>";
+}
+
+// ---------- helpers ----------
+function buildContext(q, k) {
+  const hits = KB.tools.search_knowledge_base({ query: q, limit: k });
+  const ids = hits.results.map((h) => h.id);
+  const text = hits.results.map((h) => {
+    const n = KB.tools.get_node({ id: h.id });
+    return `### ${n.label} (${n.type})\n${(n.body || n.description || "").slice(0, 1100)}`;
+  }).join("\n\n");
+  return { ids, text };
+}
+function collectIds(obj, set) {
+  if (!obj || typeof obj !== "object") return;
+  if (typeof obj.id === "string" && obj.url) set.add(obj.id);
+  for (const v of Object.values(obj)) { if (Array.isArray(v)) v.forEach((x) => collectIds(x, set)); else if (typeof v === "object") collectIds(v, set); }
+}
+function renderCites(bot, ids) {
+  const uniq = [...new Set(ids)].slice(0, 8);
+  if (!uniq.length) return;
+  const box = document.createElement("div"); box.className = "cites";
+  for (const id of uniq) {
+    const n = KB.tools.get_node({ id }); if (n.error) continue;
+    const a = document.createElement("a"); a.href = n.url; a.className = "cite";
+    a.innerHTML = `<b>${escapeHtml(n.label)}</b><span class="ty">${n.type}</span>`;
+    box.appendChild(a);
+  }
+  bot.querySelector(".bubble").appendChild(box);
+}
+function setTrace(bot, names) {
+  let t = bot.querySelector(".trace");
+  if (!t) { t = document.createElement("div"); t.className = "trace"; bot.querySelector(".bubble").prepend(t); }
+  t.innerHTML = names.map((n) => `<span class="t">🔧 ${n}</span>`).join("");
+}
+function addMsg(who, html, isUser) {
+  const d = document.createElement("div"); d.className = "msg " + who;
+  d.innerHTML = `<div class="who">${who === "user" ? "You" : "KB Tutor"}</div><div class="bubble">${html}</div>`;
+  stream.appendChild(d); $("#chat").scrollTop = $("#chat").scrollHeight; return d;
+}
+function escapeHtml(s) { return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+</script>
+</body>
+</html>
