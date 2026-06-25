@@ -52,6 +52,11 @@ Students progress from the basic limitations of classical sequential architectur
 *   **[Session 15](../sessions/c4-genai-pretrained-models-session-15.md) (2026-03-29) — Capstone Presentations Day 2: Group Project Pitches & Course Wrap-up**
     The final round of product defenses—featuring innovative designs like Aegis, Cidris, and Giu AI—and a course wrap-up summarizing the transition from task execution to goal-driven agentic autonomy.
 
+# Assignments
+
+- [Assignment 1: RAG-Based GenAI Solution Design](../assignments/c4-genai-pretrained-models-assignment-1.md) — Individual; design a retrieval-augmented GenAI solution for a knowledge-work task (25 marks).
+- [Group Assignment: Business Problem Solved with Generative AI](../assignments/c4-genai-pretrained-models-group-assignment.md) — Group; vision, solution proposition, product roadmap, and ROI for a GenAI product (50 marks).
+
 # Citations
 
 1. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, L., & Polosukhin, I. (2017). *Attention Is All You Need*. arXiv preprint arXiv:1706.03762.

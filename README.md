@@ -17,10 +17,11 @@ and by tooling.
 | | Count |
 |---|---|
 | Courses | 6 |
-| Sessions | 73 |
+| Sessions | 74 |
 | Core concepts | 23 |
-| Reference guides | 5 |
-| Graph connections | ~1,044 |
+| Reference guides | 4 |
+| Assignments | 11 |
+| Graph connections | ~1,119 |
 
 ### The six courses
 
@@ -40,6 +41,7 @@ and by tooling.
 ```
 dba-knowledge-base/
 ├─ bundle/              The OKF knowledge base (source of truth)
+│   ├─ assignments/    Assignment & capstone briefs (summaries + rubrics)
 │   ├─ courses/         Six DBA courses (C1–C6)
 │   ├─ sessions/        Session syllabi & notes
 │   ├─ concepts/        Cross-cutting concepts
@@ -51,6 +53,8 @@ dba-knowledge-base/
 │   ├─ vision.html      Project vision one-pager
 │   └─ okf-explained.html
 ├─ tools/
+│   ├─ build_bundle.py  Builds tools/bundle.json from bundle/*.md
+│   ├─ bundle.json       Graph cache consumed by the generator
 │   └─ gen_viz_v2.py    Generator: builds the interactive map from bundle/
 ├─ PRODUCT_VISION.md    Direction, workstreams, roadmap
 ├─ LICENSE              MIT (code & tooling)
@@ -74,10 +78,11 @@ for an overview.
 
 ## Regenerating the interactive map
 
-The map (`docs/map.html`) is generated from `bundle/`:
+The map (`docs/map.html`) is generated from `bundle/` in two steps:
 
 ```bash
-python3 tools/gen_viz_v2.py
+python3 tools/build_bundle.py   # bundle/*.md  ->  tools/bundle.json   (requires PyYAML)
+python3 tools/gen_viz_v2.py     # tools/bundle.json  ->  docs/map.html
 ```
 
 The page loads Cytoscape.js, marked.js, and KaTeX from CDN — an internet connection is

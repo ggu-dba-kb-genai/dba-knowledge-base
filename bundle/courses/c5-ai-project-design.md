@@ -48,6 +48,11 @@ The instructional arc begins with defining good business-centric AI strategies a
 
 ---
 
+## Assignments
+
+- [Assignment 1: AI Decision-Making & Vendor Evaluation](../assignments/c5-ai-project-design-assignment-1.md) — Individual; critique three polished vendor pitches and decide Build / Buy / Partner / Platform (25 marks).
+- [Capstone: Executive AI Research-to-Execution Board Defense](../assignments/c5-ai-project-design-group-assignment.md) — Team capstone defending an AI initiative to an executive investment and governance board (50 marks).
+
 ## Citations
 
 1. **ISO/IEC/IEEE 29148:2018** — *Systems and software engineering — Life cycle processes — Requirements engineering*. This international standard defines the constructs of necessity, feasibility, unambiguity, verifiability, and traceability in requirement documentation, serving as the foundational reference for Session 04's requirements framework.

@@ -400,7 +400,7 @@ main {
     </div>
     <div>
       <h1>DBA Knowledge Map</h1>
-      <span class="sub">6 courses · 106 nodes · 1,044 connections</span>
+      <span class="sub">6 courses · 118 nodes · 1,119 connections</span>
     </div>
   </div>
   <div class="controls">
@@ -411,6 +411,7 @@ main {
       <option value="Concept">Concepts</option>
       <option value="Session">Sessions</option>
       <option value="Reference">References</option>
+      <option value="Assignment">Assignments</option>
     </select>
     <button class="btn" id="btn-expand">↓ Expand all</button>
     <button class="btn" id="btn-collapse">↑ Overview</button>
@@ -454,9 +455,9 @@ main {
         <div class="section-head">Summary</div>
         <div class="stat-grid">
           <div class="stat-card"><div class="n">6</div><div class="label">Courses</div></div>
-          <div class="stat-card"><div class="n">73</div><div class="label">Sessions</div></div>
+          <div class="stat-card"><div class="n">74</div><div class="label">Sessions</div></div>
           <div class="stat-card"><div class="n">23</div><div class="label">Concepts</div></div>
-          <div class="stat-card"><div class="n">1,044</div><div class="label">Connections</div></div>
+          <div class="stat-card"><div class="n">11</div><div class="label">Assignments</div></div>
         </div>
       </div>
       <div>
@@ -467,7 +468,7 @@ main {
         </div>
         <div class="legend-item" data-filter="Session">
           <span class="legend-dot" style="background:#b8864e"></span>
-          Session <span class="legend-cnt">73 · hidden in overview</span>
+          Session <span class="legend-cnt">74 · hidden in overview</span>
         </div>
         <div class="legend-item" data-filter="Concept">
           <span class="legend-dot diamond" style="background:#2a6b42"></span>
@@ -476,6 +477,10 @@ main {
         <div class="legend-item" data-filter="Reference">
           <span class="legend-dot square" style="background:#87867f"></span>
           Reference <span class="legend-cnt">4</span>
+        </div>
+        <div class="legend-item" data-filter="Assignment">
+          <span class="legend-dot" style="background:#9a6520"></span>
+          Assignment <span class="legend-cnt">11 · always visible</span>
         </div>
       </div>
       <div>
@@ -522,10 +527,11 @@ MIDDLE = r''';
 
 // ── Palette ───────────────────────────────────────────────────
 const TYPE_COLORS = {
-  Course:    '#c96442',
-  Session:   '#b8864e',
-  Concept:   '#2a6b42',
-  Reference: '#87867f',
+  Course:     '#c96442',
+  Session:    '#b8864e',
+  Concept:    '#2a6b42',
+  Reference:  '#87867f',
+  Assignment: '#9a6520',
 };
 
 const COURSE_COLORS = {
@@ -721,6 +727,18 @@ const styles = [
       'text-outline-width': 2,
       'text-valign': 'bottom',
       'font-size': '10px',
+    }
+  },
+  {
+    selector: 'node[type = "Assignment"]',
+    style: {
+      shape: 'hexagon',
+      width: 34, height: 34,
+      color: '#141413',
+      'text-outline-color': '#f5f4ed',
+      'text-outline-width': 2,
+      'text-valign': 'bottom',
+      'font-size': '9px',
     }
   },
   {

@@ -41,6 +41,11 @@ Throughout the course, students are introduced to a wide spectrum of paradigm-sh
 - [Session 14](../sessions/c1-emerging-digital-technologies-session-14.md) (2025-09-06) — Student Presentations, Course Assessment Debrief, and Group Projects
 - [Session 15](../sessions/c1-emerging-digital-technologies-session-15.md) (2025-09-07) — Final Course Wrap-Up, Student Evaluations, and Feedback
 
+# Assignments
+
+- [Assignment 1: Analyze a Business Transformed by Emerging Technology](../assignments/c1-emerging-digital-technologies-assignment-1.md) — Individual report (20 marks, 50% weight).
+- [Final Assignment: A Framework for Integrating Emerging Technologies](../assignments/c1-emerging-digital-technologies-final-assignment.md) — Group framework report and presentation (50 marks, 50% weight).
+
 # Citations
 
 1. Nakamoto, S. (2008). "Bitcoin: A Peer-to-Peer Electronic Cash System."

@@ -36,6 +36,11 @@ Throughout the course, students build a rigorous understanding of feedforward ne
 - [Session 14: Neuromorphic Computing & Hardware Acceleration](../sessions/c3-deep-learning-session-14.md) (2026-01-10) — Examines spiking neural networks and specialized acceleration architectures under [Neuromorphic and Hardware Acceleration](../concepts/neuromorphic-and-hardware-acceleration.md).
 - [Session 15: Course Wrap-up, Lab Review & Advanced Horizons](../sessions/c3-deep-learning-session-15.md) (2026-01-11) — Summarizes core course learnings, walks through implementation labs, and reviews future research horizons in advanced deep architectures.
 
+# Assignments
+
+- [Assignment 1: Conceptual Deep Learning Architecture Design](../assignments/c3-deep-learning-assignment-1.md) — Individual executive report designing a DNN architecture for a complex business problem.
+- [Group Assignment: Evolution of a Deep Learning Technique](../assignments/c3-deep-learning-group-assignment.md) — Group; trace one technique from inception to state of the art with real-world business impact (40 marks).
+
 # Citations
 
 1. Goodfellow, I., Bengio, Y., & Courville, A. (2016). *Deep Learning*. MIT Press. (Highly recommended classical textbook covering theoretical and mathematical foundations).

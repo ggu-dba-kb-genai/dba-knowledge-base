@@ -23,6 +23,15 @@ Throughout the course, students explore technical foundations including Large La
 
 - [Session 01: Under the Hood of LLMs, the Darwin Framework, and Project Economics](../sessions/c6-responsible-ai-session-01.md) (2026-06-06) — Explores how LLMs are pre-trained, tokenized, and aligned using Supervised Fine-Tuning (SFT), introducing the Darwin Framework and the economics of project selection.
 - [Session 02: Advanced LLM Techniques, Model Shrinking, and Practical Deployment Challenges](../sessions/c6-responsible-ai-session-02.md) (2026-06-07) — Covers Reinforcement Learning (RLHF/RLAIF), DeepSeek's reasoning model innovations, tool calling via the Model Context Protocol (MCP), RAG vs. Fine-Tuning, model shrinking techniques, and real-world deployment resistance.
+- [Session 03: A = Algorithm — Product Ideation & Prototyping](../sessions/c6-responsible-ai-session-03.md) (2026-06-21) — Opens the Darwin "A = Algorithm" pillar: why AI initiatives stall, what makes a good prototype, time-boxing builds to days in the AI era, and a structured Translation-Ideation method for turning a business problem into a testable prototype.
+
+# Upcoming Sessions
+
+Per the authoritative Cohort 8 course outline, subsequent live sessions continue the Darwin pillars: **D = Data** — feature engineering, bias hacking, and multi-modal integration (27 June); **IN = Infrastructure** — cloud vs on-prem, open vs closed, CPU vs GPU, and green metrics (28 June); **R = Responsibility** — security, privacy, global compliance, team formation, and economic analysis (4 July); **W = Workflow Integration** — business-aligned metrics (5 July); followed by explainability, observability, storytelling with data, and the team-presentation milestones.
+
+# Assignments
+
+- [Assignment 1: Ideation, Prototype & Data](../assignments/c6-responsible-ai-assignment-1.md) — Group assignment applying the "A = Algorithm" ideation method (Translation-Ideation worksheet, a data document, and a justified prototype diagram with business and technical metrics) followed by a team presentation.
 
 # Citations
 

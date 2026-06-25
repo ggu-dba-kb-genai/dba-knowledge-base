@@ -38,6 +38,11 @@ Throughout the 15 sessions, students engage in both theoretical discussions and 
 *   **[Session 14: Hands-On Lab: Unsupervised Clustering Pipelines in Azure ML](../sessions/c2-foundations-ml-ai-session-14.md) (2025-11-02)** — A practical lab for constructing and evaluating unsupervised clustering pipelines, handling multi-dimensional outliers, and managing Azure ML compute resources.
 *   **[Session 15: Time Series Analysis, Forecasting, and Program Wrap-Up](../sessions/c2-foundations-ml-ai-session-15.md) (2025-11-08)** — Explores forecasting techniques (regression on time, additive and multiplicative seasonality, exponential smoothing, and ARMA models) and wraps up the course with program-level connections.
 
+# Assignments
+
+- [Assignment 1: Linear Regression Modeling & Analysis](../assignments/c2-foundations-ml-ai-assignment-1.md) — Individual; build and interpret a linear regression model on self-generated data (50 marks).
+- [Final Assignment: AI/ML Algorithm Playbook by Industry](../assignments/c2-foundations-ml-ai-final-assignment.md) — Group; map business problems to classical algorithms with KPIs, metrics, and validation (70% group / 30% individual).
+
 # Citations
 
 1. Provost, F., & Fawcett, T. (2013). *Data Science for Business: What You Need to Know about Data Mining and Data-Analytic Thinking*. O'Reilly Media.
