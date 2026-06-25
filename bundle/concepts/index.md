@@ -1,0 +1,25 @@
+# Concept
+
+* [Agentic AI and Autonomous Systems](agentic-ai-autonomous-systems.md) - Design of systems featuring goal-driven behavior, tool use, environment interaction, multi-agent coordination, and decision-making feedback loops.
+* [AI Governance and Compliance](ai-governance-compliance.md) - Frameworks, legal compliance protocols, policies, and risk management strategies regulating the ethical design, deployment, and auditing of AI.
+* [AI Lifecycle and MLOps](ai-lifecycle-and-mlops.md) - The end-to-end framework of scoping, designing, deploying, monitoring, and updating AI systems in enterprise production environments.
+* [AI Security and Robustness](ai-security-robustness.md) - Protecting AI pipelines from adversarial attacks, data poisoning, model extraction, prompt injection, and ensuring overall runtime security.
+* [Attention Mechanisms and Transformers](attention-and-transformers.md) - Sequence-processing architectures relying on self-attention to dynamically weigh relationships between tokens across long context windows.
+* [Bias, Fairness, and Alignment](bias-fairness-alignment.md) - Methods and frameworks for identifying, measuring, and mitigating algorithmic bias to ensure AI systems align with ethical, legal, and social values.
+* [Bias-Variance Tradeoff](bias-variance-tradeoff.md) - The fundamental tension in model optimization between underfitting and overfitting, crucial for configuring model capacity and generalization.
+* [Computer Vision](computer-vision.md) - Methods for enabling computers to extract high-level semantic understanding, features, and spatial representations from digital images or videos.
+* [Decentralized AI and Blockchain](decentralized-ai-and-blockchain.md) - The integration of secure distributed ledgers and machine learning for decentralized training, verifiable data origin, and secure multi-party compute.
+* [Dimensionality Reduction and Feature Extraction](dimensionality-reduction.md) - Unsupervised and supervised learning techniques used to project high-dimensional data into lower-dimensional spaces while retaining key variance, resolving multi-collinearity, and creating dense vector embeddings.
+* [Embeddings and Vector Representations](embeddings-and-representations.md) - The transformation of discrete, high-dimensional real-world data into dense, continuous low-dimensional vector spaces that capture semantic meanings.
+* [Explainable AI (XAI)](explainable-ai.md) - Methods and post-hoc evaluation tools designed to make the internal logic and predictions of complex machine learning models transparent to humans.
+* [Generative Modeling](generative-modeling.md) - Unsupervised or self-supervised frameworks (such as GANs, Autoencoders, and Diffusion) that learn underlying data distributions to synthesize high-fidelity text, images, and other multi-modal data.
+* [Human-AI Collaboration and Guardrails](human-ai-collaboration-guardrails.md) - Structural systems, real-time safety filters, and user interaction protocols designed to safely constrain and secure the behavior of generative AI systems.
+* [Model Compression and Optimization](model-compression-optimization.md) - Techniques like quantization, pruning, and knowledge distillation used to reduce model size and latency for efficient edge and enterprise deployment.
+* [Model Evaluation and Validation](model-evaluation-validation.md) - Techniques, metrics, and protocols used to assess model performance, generalization ability, and robustness across training and deployment phases.
+* [Neural Network Architectures](neural-network-architectures.md) - The structural design, layer topologies, and optimization algorithms that define deep learning models and direct information routing.
+* [Neuromorphic Computing & Hardware Acceleration](neuromorphic-and-hardware-acceleration.md) - A paradigm of brain-inspired hardware architecture that leverages in-memory computing and spiking neural networks to achieve ultra-low-power, parallel, and event-driven AI processing at the edge.
+* [Prompt Engineering and In-Context Learning](prompt-engineering-context-learning.md) - Techniques for structuring textual instructions and contexts to guide generative model behavior without altering underlying parameters.
+* [Retrieval-Augmented Generation (RAG)](retrieval-augmented-generation.md) - An architectural paradigm connecting Large Language Models to dynamic external databases via vector search to reduce hallucinations and ground responses in factual, private enterprise data.
+* [Supervised Learning Foundations](supervised-learning-foundations.md) - Classical machine learning algorithms and objective functions that map input features to labeled targets using optimization techniques.
+* [Time Series and Forecasting](time-series-forecasting.md) - Statistical and deep learning models designed to analyze sequential, time-dependent observations to identify patterns and predict future values.
+* [Transfer Learning and Fine-Tuning](transfer-learning-fine-tuning.md) - Adapting pre-trained foundational models to specialized downstream domains or tasks through selective weight updates or parameter-efficient adaptations.

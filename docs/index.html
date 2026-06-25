@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBA Knowledge Base — AI &amp; Machine Learning for Business Doctorates</title>
+<meta name="description" content="An open, AI-augmented knowledge base for a Doctor of Business Administration (DBA) program — six courses on emerging tech, ML, deep learning, generative AI, AI project design and responsible AI, expressed in the Open Knowledge Format (OKF).">
+<style>
+  :root {
+    --bg: #f5f4ed; --bg2: #faf9f5; --bg3: #e8e6dc;
+    --border: #f0eee6; --border-warm: #e8e6dc;
+    --accent: #c96442; --accent2: #d97757;
+    --green: #2a6b42; --yellow: #9a6520; --red: #b53333;
+    --text: #141413; --muted: #5e5d59; --text3: #87867f; --text-light: #b0aea5;
+    --dark: #141413; --dark2: #30302e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: Georgia, 'Anthropic Serif', serif; font-weight: 500; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  header.hero {
+    background: var(--dark); color: var(--text-light);
+    padding: 80px 0 72px;
+    border-bottom: 1px solid var(--dark2);
+  }
+  header.hero .wrap { max-width: 940px; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent2); font-weight: 600; margin-bottom: 18px;
+  }
+  header.hero h1 {
+    color: #faf9f5; font-size: 46px; line-height: 1.12; max-width: 760px;
+    margin-bottom: 20px;
+  }
+  header.hero p.lede {
+    color: var(--text-light); font-size: 18px; max-width: 680px; line-height: 1.55;
+  }
+  .hero-cta { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 8px;
+    font-size: 15px; font-weight: 500; transition: box-shadow .15s, transform .05s;
+  }
+  .btn:hover { text-decoration: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { box-shadow: 0 0 0 1px var(--accent), rgba(0,0,0,.25) 0 4px 18px; }
+  .btn-ghost { background: transparent; color: var(--text-light); box-shadow: inset 0 0 0 1px var(--dark2); }
+  .btn-ghost:hover { box-shadow: inset 0 0 0 1px var(--text3); color: #faf9f5; }
+
+  /* Stats strip */
+  .stats {
+    background: var(--bg2); border-bottom: 1px solid var(--border-warm);
+    padding: 26px 0;
+  }
+  .stats .wrap { display: flex; gap: 48px; flex-wrap: wrap; }
+  .stat .num { font-family: Georgia, serif; font-size: 30px; color: var(--accent); line-height: 1; }
+  .stat .lab { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  /* Sections */
+  section { padding: 60px 0; }
+  section h2 { color: var(--accent); font-size: 28px; margin-bottom: 10px; }
+  section .sub { color: var(--muted); margin-bottom: 32px; max-width: 640px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--bg2); border: 1px solid var(--border-warm); border-radius: 12px;
+    padding: 26px; transition: box-shadow .15s, transform .08s; display: flex; flex-direction: column;
+  }
+  .card:hover { box-shadow: rgba(0,0,0,.05) 0 4px 24px; transform: translateY(-2px); text-decoration: none; }
+  .card h3 { font-size: 20px; color: var(--text); margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 14px; flex: 1; }
+  .card .go { color: var(--accent); font-size: 14px; font-weight: 500; margin-top: 16px; }
+  .card .tag { display:inline-block; font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    color: var(--yellow); font-weight:600; margin-bottom:12px; }
+
+  /* Courses */
+  .courses { background: var(--bg2); }
+  .course-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
+  .course {
+    background: var(--bg); border: 1px solid var(--border-warm); border-radius: 10px; padding: 20px;
+    border-left: 4px solid var(--accent);
+  }
+  .course .code { font-size: 12px; font-weight:700; color: var(--accent); letter-spacing:.05em; }
+  .course h4 { font-family: Georgia, serif; font-weight:500; font-size: 17px; margin: 4px 0 8px; color: var(--text); }
+  .course p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .course:nth-child(2){ border-left-color: var(--green); } .course:nth-child(2) .code{ color: var(--green);}
+  .course:nth-child(3){ border-left-color: var(--yellow); } .course:nth-child(3) .code{ color: var(--yellow);}
+  .course:nth-child(4){ border-left-color: #6b3a1a; } .course:nth-child(4) .code{ color:#6b3a1a;}
+  .course:nth-child(5){ border-left-color: #4a7a3a; } .course:nth-child(5) .code{ color:#4a7a3a;}
+  .course:nth-child(6){ border-left-color: var(--accent2); } .course:nth-child(6) .code{ color: var(--accent2);}
+
+  /* About OKF */
+  .okf { background: var(--dark); color: var(--text-light); }
+  .okf h2 { color: var(--accent2); }
+  .okf .sub { color: var(--text-light); }
+  .okf code { background: var(--dark2); color: #faf9f5; padding: 2px 7px; border-radius: 5px; font-size: 13px; }
+  .okf .tree {
+    background: var(--dark2); border-radius: 10px; padding: 22px 24px; margin-top: 8px;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 13px; color: var(--text-light); line-height: 1.7;
+    overflow-x: auto;
+  }
+  .okf .tree .d { color: var(--accent2); }
+
+  footer {
+    background: var(--bg); border-top: 1px solid var(--border-warm);
+    padding: 40px 0; color: var(--text3); font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  footer a { color: var(--muted); }
+  .lic { max-width: 520px; }
+  @media (max-width: 600px){ header.hero h1{ font-size: 34px; } .stats .wrap{ gap: 28px; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Open Knowledge Base · DBA · GenAI</div>
+    <h1>An open, AI-augmented knowledge base for a Doctorate in Business Administration</h1>
+    <p class="lede">Six graduate courses — emerging digital technologies, machine learning, deep learning, generative AI, AI project design, and responsible AI — structured as a navigable knowledge graph in the Open Knowledge Format.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="map.html">Explore the knowledge map →</a>
+      <a class="btn btn-ghost" href="https://github.com/ggu-dba-kb-genai/dba-knowledge-base">View on GitHub</a>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><div class="num">6</div><div class="lab">Courses</div></div>
+    <div class="stat"><div class="num">73</div><div class="lab">Sessions</div></div>
+    <div class="stat"><div class="num">23</div><div class="lab">Core concepts</div></div>
+    <div class="stat"><div class="num">5</div><div class="lab">Reference guides</div></div>
+    <div class="stat"><div class="num">1,044</div><div class="lab">Connections</div></div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Three ways in</h2>
+    <p class="sub">The same knowledge base, seen from different angles.</p>
+    <div class="cards">
+      <a class="card" href="map.html">
+        <span class="tag">Interactive</span>
+        <h3>Knowledge Map</h3>
+        <p>A navigable graph of every course, session, concept and reference. Click a course to expand its sessions; open any node for its full curriculum content, with typeset math.</p>
+        <span class="go">Open the map →</span>
+      </a>
+      <a class="card" href="okf-explained.html">
+        <span class="tag">Background</span>
+        <h3>What is OKF?</h3>
+        <p>The Open Knowledge Format — a portable, git-friendly markdown schema for knowledge bases. How this DBA corpus is modelled as concepts, courses, sessions and references.</p>
+        <span class="go">Read the explainer →</span>
+      </a>
+      <a class="card" href="vision.html">
+        <span class="tag">Direction</span>
+        <h3>Project Vision</h3>
+        <p>Where this is going — the pipeline from raw course material to a published, community-maintained knowledge base, the workstreams, and the roadmap to public launch.</p>
+        <span class="go">See the vision →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="courses">
+  <div class="wrap">
+    <h2>The six courses</h2>
+    <p class="sub">The doctoral arc — from the broader digital ecosystem to the technical core, to responsible deployment.</p>
+    <div class="course-list">
+      <div class="course"><div class="code">C1</div><h4>Emerging Digital Technologies</h4><p>IoT, cloud &amp; HPC, neuromorphic computing, AR/VR/XR, RPA, digital twins, blockchain — and their strategic integration with AI.</p></div>
+      <div class="course"><div class="code">C2</div><h4>Foundations of ML &amp; AI</h4><p>Classical machine learning and statistical modelling — supervised &amp; unsupervised learning, regression, clustering, time-series, model evaluation.</p></div>
+      <div class="course"><div class="code">C3</div><h4>Deep Learning</h4><p>Neural networks and modern deep architectures, from fundamentals through training, optimisation and representation learning.</p></div>
+      <div class="course"><div class="code">C4</div><h4>Generative AI &amp; Pretrained Models</h4><p>Large language models, pretraining and fine-tuning, transformers, and the generative-AI toolchain.</p></div>
+      <div class="course"><div class="code">C5</div><h4>AI Project Design</h4><p>Designing, scoping and executing AI initiatives — from research problem identification to delivery in a business context.</p></div>
+      <div class="course"><div class="code">C6</div><h4>Responsible AI</h4><p>Fairness, accountability, transparency, security and governance — deploying AI responsibly at organisational scale.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="okf">
+  <div class="wrap">
+    <h2>Built on the Open Knowledge Format</h2>
+    <p class="sub">Every course, session, concept and reference is a markdown file with structured front-matter and cross-links — portable, diff-able, and version-controlled. The interactive map and this site are generated from it.</p>
+    <div class="tree">
+bundle/
+├─ <span class="d">courses/</span>      <span style="color:#87867f">six DBA courses (C1–C6)</span>
+├─ <span class="d">sessions/</span>     <span style="color:#87867f">73 session syllabi &amp; notes</span>
+├─ <span class="d">concepts/</span>     <span style="color:#87867f">23 cross-cutting concepts</span>
+├─ <span class="d">references/</span>   <span style="color:#87867f">5 technical reference guides</span>
+└─ index.md
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="lic">
+      <strong>DBA Knowledge Base</strong> — an open knowledge project.<br>
+      Code &amp; tooling licensed under <a href="https://github.com/ggu-dba-kb-genai/dba-knowledge-base/blob/main/LICENSE">MIT</a>.
+      Knowledge-base content under <a href="https://github.com/ggu-dba-kb-genai/dba-knowledge-base/blob/main/LICENSE-CONTENT.md">CC&nbsp;BY&nbsp;4.0</a>.
+    </div>
+    <div>
+      <a href="https://github.com/ggu-dba-kb-genai/dba-knowledge-base">GitHub</a> ·
+      <a href="https://github.com/ggu-dba-kb-genai/dba-knowledge-base/blob/main/PRODUCT_VISION.md">Vision</a> ·
+      <a href="https://github.com/ggu-dba-kb-genai/dba-knowledge-base/blob/main/CONTRIBUTING.md">Contribute</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

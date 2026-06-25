@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Knowledge Format (OKF) — explained for your DBA knowledge base</title>
+<style>
+:root{
+  --bg:#f5f4ed; --bg2:#faf9f5; --bg3:#e8e6dc; --border:#f0eee6; --border-warm:#e8e6dc;
+  --accent:#c96442; --accent2:#d97757; --green:#2a6b42; --yellow:#9a6520; --red:#b53333;
+  --text:#141413; --muted:#5e5d59; --text3:#87867f; --text-light:#b0aea5;
+  --dark:#141413; --dark2:#30302e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.6;display:flex}
+h1,h2,h3,h4{font-family:Georgia,'Anthropic Serif',serif;font-weight:500;line-height:1.18}
+h1{font-size:34px;color:var(--text);line-height:1.1}
+h2{font-size:25px;color:var(--accent);margin:0 0 14px}
+h3{font-size:19px;color:var(--muted);margin:22px 0 8px}
+h4{font-size:15px;color:var(--yellow);margin:16px 0 6px;font-family:system-ui,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+p{margin:0 0 12px;max-width:74ch}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:13px;color:var(--text)}
+ul,ol{margin:0 0 14px 22px}
+li{margin:4px 0;max-width:72ch}
+
+/* sidebar */
+aside{width:264px;min-width:264px;background:var(--dark);color:var(--text-light);height:100vh;position:sticky;top:0;padding:30px 22px;overflow-y:auto}
+aside .brand{font-family:Georgia,serif;color:#f5f4ed;font-size:20px;margin-bottom:4px}
+aside .sub{color:var(--text3);font-size:12px;margin-bottom:26px}
+aside nav a{display:block;color:var(--text-light);font-size:13.5px;padding:7px 10px;border-radius:6px;margin:2px 0;border-left:2px solid transparent}
+aside nav a:hover{background:var(--dark2);text-decoration:none}
+aside nav a.active{background:var(--dark2);color:#f5f4ed;border-left:2px solid var(--accent)}
+aside .tag{display:inline-block;margin-top:24px;font-size:11px;color:var(--text3);border:1px solid var(--dark2);border-radius:20px;padding:4px 10px}
+
+main{flex:1;max-width:1000px;padding:48px 60px 120px}
+section{margin-bottom:46px;scroll-margin-top:24px}
+
+.lede{font-size:18px;color:var(--muted);max-width:76ch;margin-bottom:8px}
+.verdict{background:var(--dark);color:#f5f4ed;border-radius:12px;padding:22px 26px;margin:22px 0;box-shadow:rgba(0,0,0,0.05) 0px 4px 24px}
+.verdict h4{color:var(--accent2);margin-top:0}
+.verdict p{color:#e8e6dc;max-width:80ch;margin-bottom:0}
+
+figure{margin:18px 0;background:var(--bg2);border:1px solid var(--border-warm);border-radius:12px;padding:16px;box-shadow:rgba(0,0,0,0.05) 0px 4px 24px}
+figure img{width:100%;height:auto;display:block;border-radius:6px}
+figcaption{font-size:13px;color:var(--text3);margin-top:10px;font-style:italic}
+
+.card{background:var(--bg2);border:1px solid var(--border-warm);border-radius:10px;padding:18px 20px;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14px}
+th{background:var(--bg3);text-align:left;padding:9px 12px;font-weight:600;border-bottom:2px solid var(--border-warm)}
+td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em}
+.p-fact{background:#d5e8d4;color:var(--green)}
+.p-analysis{background:#ffe6cc;color:var(--yellow)}
+.p-rec{background:var(--accent);color:#fff}
+.p-counter{background:#f8cecc;color:var(--red)}
+.conf{font-size:12px;color:var(--text3);font-style:italic}
+
+blockquote{border-left:3px solid var(--accent);background:var(--bg2);padding:12px 18px;margin:14px 0;border-radius:0 8px 8px 0;color:var(--muted)}
+.kbd{font-family:'Courier New',monospace;font-size:13px;background:var(--dark);color:#e8e6dc;padding:14px 16px;border-radius:8px;display:block;white-space:pre-wrap;margin:10px 0;line-height:1.5}
+.step{display:flex;gap:14px;margin:12px 0}
+.step .n{flex:0 0 30px;height:30px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-family:Georgia,serif}
+.step .b{flex:1}
+hr{border:none;border-top:1px solid var(--border-warm);margin:30px 0}
+.foot{font-size:13px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">Open Knowledge Format</div>
+  <div class="sub">OKF v0.1 · a visual primer + decision brief for the DBA / upGrad knowledge base</div>
+  <nav id="nav">
+    <a href="#tldr">TL;DR &amp; verdict</a>
+    <a href="#what">1 · What it actually is</a>
+    <a href="#why">2 · The problem it solves</a>
+    <a href="#anatomy">3 · Anatomy of a bundle</a>
+    <a href="#ecosystem">4 · Produce → consume</a>
+    <a href="#rules">5 · The whole spec in 1 table</a>
+    <a href="#apply">6 · Applied to YOUR KB</a>
+    <a href="#usecases">7 · Use cases unlocked</a>
+    <a href="#decision">8 · Should you adopt?</a>
+    <a href="#migrate">9 · Concrete migration path</a>
+    <a href="#sources">Sources</a>
+  </nav>
+  <span class="tag">🍌 built 2026-06-19</span>
+</aside>
+
+<main>
+
+<section id="tldr">
+  <h1>Open Knowledge Format, explained — and whether to pour your DBA knowledge base into it</h1>
+  <p class="lede">OKF is Google's draft answer to one question: <em>how should AI agents read a body of knowledge without you dumping everything into context or hiding it in an opaque vector index?</em> Its answer is deliberately boring — a folder of markdown files with YAML frontmatter. That boringness is the whole point.</p>
+
+  <div class="verdict">
+    <h4>One-paragraph verdict</h4>
+    <p>Adopt the <strong>format</strong>, not (yet) the <strong>ecosystem</strong>. OKF is a thin, sensible spec and your DBA knowledge base is already ~80% of the way there — you have a markdown mirror and a clean <code>organized/</code> tree. Adding OKF frontmatter + <code>index.md</code>/<code>log.md</code> + cross-links is cheap and fully reversible (it stays plain markdown). The real payoff is on the consumption side: one MCP server / Claude Project over all six courses with progressive disclosure and citations, plus a cross-course concept graph. But the spec is <strong>v0.1 draft, single-vendor, weeks old</strong>, and the third-party tools around it are hobby-grade — so build your own generator with the printing-press pattern and don't depend on anyone else's OKF software.</p>
+  </div>
+</section>
+
+<section id="what">
+  <h2>1 · What OKF actually is (and is not)</h2>
+  <p>Three things ship in the <code>GoogleCloudPlatform/knowledge-catalog</code> repo, and it's worth separating them because people conflate them:</p>
+  <table>
+    <tr><th>Thing</th><th>What it is</th><th>Status</th></tr>
+    <tr><td><strong>The OKF spec</strong></td><td>A ~450-line markdown document (<code>SPEC.md</code>) defining the format: a directory of markdown + YAML frontmatter. <em>This is the actual contribution.</em></td><td><span class="pill p-fact">v0.1 DRAFT</span></td></tr>
+    <tr><td><strong>The enrichment agent</strong></td><td>A reference <em>producer</em> — a Python agent on Google's ADK + Gemini that reads BigQuery metadata (+ crawls seed docs) and writes a bundle. Explicitly labelled a "proof of concept."</td><td>PoC only</td></tr>
+    <tr><td><strong>The viewer (<code>viz.html</code>)</strong></td><td>A reference <em>consumer</em> — a self-contained force-directed graph viewer (Cytoscape + marked, one HTML file, no backend).</td><td>PoC only</td></tr>
+  </table>
+  <p><strong>What it is not:</strong> not a Google product, not a hosted service, not a schema registry, not a database. There is no central authority, no required SDK, no required tooling. In the spec's own words: <em>"If you can <code>cat</code> a file, you can read OKF; if you can <code>git clone</code> a repo, you can ship it."</em></p>
+  <p>Its design center is <strong>data-catalog metadata</strong> (describing BigQuery tables, datasets, metrics) — but the format itself is domain-agnostic. A "concept" can be a table, an API, a metric, a playbook… or a lecture session. That generality is what makes it relevant to your use case.</p>
+</section>
+
+<section id="why">
+  <h2>2 · The problem it solves</h2>
+  <p>When you want an agent to use a knowledge corpus today, you usually pick a bad option:</p>
+  <div class="grid">
+    <div class="card"><h4>Option A — paste everything</h4><p>Dump all transcripts/docs into context. Burns tokens, blows the window, and the model drowns in irrelevant material.</p></div>
+    <div class="card"><h4>Option B — hidden vector index</h4><p>Embed everything into a RAG store. Now retrieval is a black box you can't read, diff, audit, or version. You trust a similarity score you can't see.</p></div>
+  </div>
+  <p>OKF is the third option: <strong>structured, navigable, plain-text knowledge</strong> the agent traverses on demand — open the index, read only the relevant concept, follow its links to neighbours, cite the source. Everything stays human-readable and git-diffable. The bet is that <em>established, accessible formats beat bespoke ones</em>: markdown + YAML are already understood by humans, agents, and half the tools you own.</p>
+  <p>The four properties it optimises for, verbatim from the spec: <strong>Readable</strong> (no tooling), <strong>Parseable</strong> (no SDK), <strong>Diffable</strong> (version control), <strong>Portable</strong> (across tools, orgs, time).</p>
+</section>
+
+<section id="anatomy">
+  <h2>3 · Anatomy of a bundle</h2>
+  <p>A <strong>bundle</strong> is one directory tree. A <strong>concept</strong> is one markdown file inside it. Each concept has a YAML frontmatter block (the small, queryable layer) and a markdown body (the prose humans and LLMs actually read). Two reserved filenames carry meaning at any level: <code>index.md</code> (a directory listing for progressive disclosure) and <code>log.md</code> (an update history). Concepts link to each other with ordinary markdown links — which quietly turns the tree into a graph.</p>
+  <figure>
+    <img src="diagrams/01_okf_anatomy.svg" alt="OKF bundle anatomy — tree on the left, a single concept document's frontmatter and body on the right">
+    <figcaption>Diagram 1 — A bundle is a tree of markdown files (left). Zooming into one concept (right): required <code>type</code> + recommended fields in frontmatter, structural markdown body, and a cross-link that makes the tree a graph. Conformance rules are intentionally tiny (dark box).</figcaption>
+  </figure>
+</section>
+
+<section id="ecosystem">
+  <h2>4 · Produce → bundle → consume</h2>
+  <p>The format's leverage is that it sits <em>between</em> many producers and many consumers as a neutral interchange layer. Nothing in the middle is proprietary, so any tool that can write markdown can produce it, and any tool that can read markdown can consume it. The reference agent and viewer are just <em>one</em> shape at each end.</p>
+  <figure>
+    <img src="diagrams/02_okf_ecosystem.svg" alt="OKF ecosystem — producers on the left feed one bundle in the centre, consumers on the right read it">
+    <figcaption>Diagram 2 — Many producers (humans, enrichment agents, catalog exporters, your own CLIs) write into one plain-text bundle; many consumers (LLMs, MCP servers, Obsidian/Notion, the graph viewer, plain file servers) read it. The OKF spec is the only contract.</figcaption>
+  </figure>
+</section>
+
+<section id="rules">
+  <h2>5 · The entire spec, in one table</h2>
+  <p>OKF is "minimally opinionated" — you can hold the whole thing in your head. Here it is:</p>
+  <table>
+    <tr><th>Element</th><th>Rule</th><th>Required?</th></tr>
+    <tr><td><code>type:</code> frontmatter</td><td>Short string identifying the kind of concept (<code>BigQuery Table</code>, <code>Playbook</code>, <code>Session</code>…). Not registered centrally; consumers must tolerate unknown types.</td><td><span class="pill p-fact">YES — the only hard requirement</span></td></tr>
+    <tr><td><code>title / description / resource / tags / timestamp</code></td><td>Recommended frontmatter. <code>resource</code> = canonical URI of the underlying asset; absent for abstract ideas.</td><td>Optional</td></tr>
+    <tr><td>Extra frontmatter keys</td><td>Any producer-defined keys allowed; consumers preserve them and must not reject on unknown keys.</td><td>Allowed</td></tr>
+    <tr><td>Body</td><td>Standard markdown. Conventional headings: <code># Schema</code>, <code># Examples</code>, <code># Citations</code>. No required sections.</td><td>Free-form</td></tr>
+    <tr><td>Cross-links</td><td>Standard markdown links. <code>/absolute</code> = bundle-relative (recommended, stable). Relationship meaning lives in the prose, not the link. Broken links are legal (= not-yet-written knowledge).</td><td>Optional</td></tr>
+    <tr><td><code>index.md</code></td><td>Reserved. A grouped listing of a directory's contents for progressive disclosure. No frontmatter (except optional <code>okf_version</code> at the root).</td><td>Optional</td></tr>
+    <tr><td><code>log.md</code></td><td>Reserved. Date-grouped change history, newest first, ISO-8601 dates.</td><td>Optional</td></tr>
+  </table>
+  <p><strong>Conformance (v0.1):</strong> a bundle conforms if every non-reserved <code>.md</code> has parseable YAML frontmatter, every frontmatter has a non-empty <code>type</code>, and <code>index.md</code>/<code>log.md</code> follow their shape when present. Consumers <em>must not</em> reject a bundle over missing optional fields, unknown types, unknown keys, broken links, or a missing index. This permissiveness is deliberate — bundles are expected to be partially agent-generated and constantly refactored.</p>
+</section>
+
+<section id="apply">
+  <h2>6 · Applied to YOUR knowledge base</h2>
+  <p><span class="pill p-analysis">Analysis</span> Your DBA corpus is an unusually good fit because it's already structured. You have <code>~/DBA/.../organized/</code> with <code>C1…C6</code> courses, each <code>Session_NN_YYYY-MM-DD/</code> with <code>video/ audio/ transcripts/ slides/ chat/ misc/</code>, and a parallel <code>markdown/</code> mirror. OKF doesn't ask you to move the heavy binaries — it asks you to lay a thin markdown layer <em>beside</em> them, where each <code>.md</code> carries frontmatter and a <code>resource:</code> pointer to the real asset.</p>
+  <figure>
+    <img src="diagrams/03_dba_to_okf.svg" alt="Mapping the current DBA folder tree on the left to an OKF bundle on the right, with use cases unlocked">
+    <figcaption>Diagram 3 — Left: what your CLIs already produce (binaries + flat text, no metadata or relationships). Right: the same content as an OKF bundle — a Course concept, a Session concept with frontmatter + asset links, a Transcript concept, and an abstract <code>concepts/bias.md</code> linked across C2/C3/C6. Binaries stay put; the <code>.md</code> points at them.</figcaption>
+  </figure>
+  <h3>The mapping</h3>
+  <table>
+    <tr><th>Today (on disk)</th><th>OKF concept</th><th><code>type:</code></th></tr>
+    <tr><td>A course folder (<code>C6_Responsible_AI/</code>)</td><td><code>courses/c6-responsible-ai.md</code></td><td><code>Course</code></td></tr>
+    <tr><td>A <code>Session_NN_DATE/</code> folder</td><td><code>sessions/c6-session-01.md</code> (frontmatter: timestamp, <code>resource: youtube://…</code>, tags; body: summary + asset links + citations)</td><td><code>Session</code></td></tr>
+    <tr><td>A transcript <code>.txt</code></td><td><code>transcripts/c6-session-01.md</code> (body = plaintext, chunked by headings)</td><td><code>Transcript</code></td></tr>
+    <tr><td>Slides / chat / case-study PDFs</td><td>concept docs with <code>resource:</code> → the file</td><td><code>Slides</code>, <code>Reference</code></td></tr>
+    <tr><td><em>(new)</em> cross-cutting topics</td><td><code>concepts/bias.md</code>, <code>concepts/transformer.md</code> — abstract ideas, no <code>resource</code>, linked from every session that touches them</td><td><code>Concept</code></td></tr>
+  </table>
+</section>
+
+<section id="usecases">
+  <h2>7 · Use cases this unlocks</h2>
+  <div class="grid">
+    <div class="card"><h4>One agent over all 6 courses</h4><p>Point a markdown MCP server (or a Claude Project) at the bundle. The agent searches the index, opens only the relevant session, and cites it — instead of you pasting a 4,000-line transcript.</p></div>
+    <div class="card"><h4>Cross-course concept graph</h4><p>Define <code>bias</code>, <code>transformer</code>, <code>evaluation</code> once and link them from every session. Now "where did the program cover bias mitigation?" traverses C2, C3 and C6 in one hop.</p></div>
+    <div class="card"><h4>Your study log, for free</h4><p>The bundle lives in git. <code>git diff</code> is your revision history; you can literally PR-review your own notes. <code>log.md</code> records each new download.</p></div>
+    <div class="card"><h4>One source, many front-ends</h4><p>The same bundle feeds Obsidian (graph + backlinks), the OKF <code>viz.html</code> force-graph, NotebookLM, and Claude — no re-export, no per-tool conversion.</p></div>
+    <div class="card"><h4>Append-only growth</h4><p>Future course downloads just drop new concept files and one <code>log.md</code> line. Your printing-press CLI already produces the raw material; it only needs a frontmatter-emitting step.</p></div>
+    <div class="card"><h4>Auditable retrieval</h4><p>Unlike a vector store, every retrieval is a file you can open and verify. For a doctoral programme where provenance matters, that's not cosmetic.</p></div>
+  </div>
+</section>
+
+<section id="decision">
+  <h2>8 · Should you adopt it?</h2>
+  <p>Structured so you can see what's verifiable vs. my read vs. my advice.</p>
+
+  <h4><span class="pill p-fact">Facts</span></h4>
+  <ul>
+    <li>OKF is <strong>v0.1 draft</strong>, published by GoogleCloudPlatform, Apache-2.0 licensed. The spec is stable-ish; the surrounding code is explicitly proof-of-concept.</li>
+    <li>The third-party ecosystem (okfy, okf-skills, conformance checkers) exists but is tiny — most repos are under ~30 stars and weeks old.</li>
+    <li>The format is plain markdown + YAML. Nothing about adopting it is irreversible.</li>
+    <li>Your KB already has a markdown mirror and a regular folder convention — the structural prerequisites are met.</li>
+  </ul>
+
+  <h4><span class="pill p-analysis">Analysis</span></h4>
+  <p>The spec is genuinely well-judged: it standardises the <em>minimum</em> needed for interop and leaves everything else open. For you the value is lopsided — almost all of it is on the <strong>consumption</strong> side (agent retrieval, cross-course graph), and very little depends on OKF-the-spec specifically. You could get ~90% of the benefit by simply adding frontmatter and pointing an MCP markdown server at your existing tree, <em>without</em> conforming to any spec. What conformance buys you on top is interop with <em>other people's</em> OKF tools — and your need for cross-organisation exchange is currently zero. <span class="conf">Confidence: Likely.</span></p>
+
+  <h4><span class="pill p-counter">Strongest argument against adopting</span></h4>
+  <p>OKF is a brand-new, single-vendor draft with a thin, hobby-grade tool ecosystem, and its design center is data catalogs — not lecture transcripts. The <code>resource:</code>/<code>type:</code>/<code># Schema</code> conventions fit a BigQuery table cleanly and a 90-minute video awkwardly. Betting your study workflow on its tooling now is premature; the spec could change under you, and the consumer tools you'd want (a good MCP server, the viewer) are either generic-markdown tools that don't need OKF or PoCs that may never harden. A reasonable person concludes: <em>add frontmatter for your own benefit, ignore the OKF brand entirely, and revisit in 6–12 months if the ecosystem proves itself.</em> This is a serious position, not a strawman.</p>
+
+  <h4><span class="pill p-rec">Recommendation</span></h4>
+  <p>Adopt the format, decline the dependency. Concretely: extend your existing printing-press CLI to emit an OKF-conformant bundle from <code>organized/</code> — it's a natural fit for the pattern you already use, and conforming costs almost nothing over "just adding frontmatter" while keeping the door open to OKF tooling if it matures. Then drive consumption with tools you already trust (Claude Project / a generic markdown MCP server), <strong>not</strong> third-party OKF software. You keep every upside (structure, graph, auditability, portability) and take on essentially no lock-in, because the worst case is "you have a folder of nicely-tagged markdown." <span class="conf">Confidence: Likely. The one thing that would change my mind: if you actually need to <em>exchange</em> these bundles with classmates or upGrad systems — then strict conformance and the broader ecosystem suddenly matter, and the calculus shifts toward going all-in on the spec.</span></p>
+</section>
+
+<section id="migrate">
+  <h2>9 · A concrete migration path (if you proceed)</h2>
+  <div class="step"><div class="n">1</div><div class="b"><strong>Generator step in the CLI.</strong> Add an <code>okf</code> subcommand that walks <code>organized/C*/Session_*/</code> and emits one <code>.md</code> per course/session/transcript with frontmatter (<code>type</code>, <code>title</code>, <code>timestamp</code> from the folder date, <code>resource</code> = YouTube id / file path, <code>tags</code>).</div></div>
+  <div class="step"><div class="n">2</div><div class="b"><strong>Auto-build <code>index.md</code> + <code>log.md</code>.</strong> Generate a root index grouping by course, a per-course index grouping by session, and append a <code>log.md</code> line on every run. Put <code>okf_version: "0.1"</code> in the root index frontmatter.</div></div>
+  <div class="step"><div class="n">3</div><div class="b"><strong>Mint a few <code>concepts/</code>.</strong> Hand-write (or have an enrichment agent draft) abstract concept files for the recurring themes — <code>bias</code>, <code>transformer</code>, <code>evaluation</code>, <code>rag</code> — and link them from the sessions that cover them. This is where the cross-course graph comes alive.</div></div>
+  <div class="step"><div class="n">4</div><div class="b"><strong>Optional enrichment pass.</strong> Run an LLM over each transcript to write a <code># Summary</code> and extract <code># Key concepts</code> links into the session body. (This is exactly what Google's reference agent does, minus BigQuery.)</div></div>
+  <div class="step"><div class="n">5</div><div class="b"><strong>Consume.</strong> Point a generic markdown MCP server / Claude Project at the bundle. Optionally generate a one-file <code>viz.html</code> graph to browse the whole programme. Commit the bundle to git so diffs become your study log.</div></div>
+  <blockquote>The whole thing is additive — it never touches your existing videos, audio, or transcripts. Worst case you delete the <code>.md</code> files and you're back to today.</blockquote>
+</section>
+
+<hr>
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="foot">
+    <li><strong>Spec:</strong> <code>GoogleCloudPlatform/knowledge-catalog → okf/SPEC.md</code> (OKF v0.1 draft) — <a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf">github.com/GoogleCloudPlatform/knowledge-catalog</a></li>
+    <li><strong>Reference agent + viewer + sample bundles</strong> (ga4 / stackoverflow / crypto_bitcoin) — same repo, <code>okf/README.md</code>, <code>okf/bundles/</code>.</li>
+    <li><strong>Third-party ecosystem (illustrative, hobby-grade):</strong> <code>0dust/OKFy</code> (okfy-ai MCP), <code>superops-team/okf</code>, <code>xSAVIKx/okf-skills</code>, <code>W4G1/okf</code> (Rust impl).</li>
+    <li><strong>Your corpus:</strong> <code>~/DBA/deep-learning-and-its-variants/organized/</code> (courses C1–C6) — cloned spec analysed locally at <code>/tmp/knowledge-catalog</code>.</li>
+  </ul>
+  <p class="foot">Diagrams generated with the draw.io skill · editable <code>.drawio</code> + <code>.svg</code> + <code>.png</code> in <code>~/okf-research/diagrams/</code>. This page: <code>~/okf-research/okf-explained.html</code>.</p>
+</section>
+
+</main>
+
+<script>
+const links=[...document.querySelectorAll('#nav a')];
+const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+const obs=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const a=map.get(e.target.id);if(a)a.classList.add('active');}});
+},{rootMargin:'-10% 0px -80% 0px',threshold:0});
+document.querySelectorAll('main section').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
