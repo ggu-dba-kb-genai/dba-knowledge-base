@@ -220,7 +220,7 @@ async function enableBuiltin() {
     await Builtin.ensure((pct) => { bot.querySelector(".bubble").innerHTML = `⬇ Downloading on-device model… <b>${pct}%</b><br><span style="font-size:.8rem;color:var(--text3)">One-time download. Stays on your machine.</span>`; });
     bot.querySelector(".bubble").innerHTML = "✅ On-device AI ready — no key, no cloud, private. Ask away.";
   } catch (e) {
-    bot.querySelector(".bubble").innerHTML = "⚠️ " + escapeHtml(String(e.message || e)) + "<br><span style='font-size:.85rem;color:var(--muted)'>Staying in search mode. See on-device setup in ⚙ Settings.</span>";
+    bot.querySelector(".bubble").innerHTML = builtinSetupHelp(String(e.message || e));
     $("#backend").value = "auto"; localStorage.setItem("kb_backend", "auto");
   }
   refreshMode();
@@ -266,6 +266,20 @@ async function ask() {
 }
 
 // ---- search-only (extractive summary; always works) ----
+function builtinSetupHelp(msg) {
+  return `<div style="font-size:.9rem">
+    <p>⚠️ <b>On-device AI needs one Chrome setup step.</b></p>
+    <p style="color:var(--text3);font-size:.82rem">Chrome said: <code>${escapeHtml(msg)}</code> — the model-execution flag is off.</p>
+    <ol style="padding-left:20px;margin:8px 0">
+      <li>Open <code>chrome://flags/#optimization-guide-on-device-model</code> → set <b>Enabled BypassPerfRequirement</b></li>
+      <li>Open <code>chrome://flags/#prompt-api-for-gemini-nano</code> → <b>Enabled</b></li>
+      <li><b>Relaunch</b> Chrome</li>
+      <li>Open <code>chrome://components</code> → <b>Optimization Guide On Device Model</b> → <b>Check for update</b> (downloads ~2&nbsp;GB; version must not be 0.0.0.0)</li>
+      <li>Reload this page → <b>Enable on-device AI</b> again</li>
+    </ol>
+    <p style="color:var(--muted);font-size:.82rem">Needs recent Chrome (Dev/Canary or stable 138+), ~22&nbsp;GB free disk, &gt;4&nbsp;GB VRAM. Status: <code>chrome://on-device-internals</code>. Search mode works meanwhile.</p>
+  </div>`;
+}
 function modeBanner() {
   return `<div class="trace" style="background:#faf6ec;border-left:3px solid var(--yellow);padding:6px 10px;border-radius:0 6px 6px 0;color:var(--yellow)">🔍 Search mode (no LLM) — extractive results. Enable on-device AI (no key) or add a Gemini key in ⚙ Settings for summarized answers.</div>`;
 }
