@@ -153,7 +153,7 @@
         query,
         results: hits.map((h) => {
           const d = node(h.id);
-          return { id: h.id, label: d.label, type: d.type, snippet: snippet(h.id, query), url: nodeUrl(h.id) };
+          return { id: h.id, label: d.label, type: d.type, score: h.score, snippet: snippet(h.id, query), url: nodeUrl(h.id) };
         }),
       };
     },
