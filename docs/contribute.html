@@ -430,8 +430,8 @@ footer a { color: var(--muted); }
 
 // ── Phase-2 account-free proxy ─────────────────────────────────────────────────
 // Set BOTH to turn on no-account submission. Leave empty → GitHub-login (prefilled) flow.
-const PROXY_URL         = "";   // e.g. "https://dba-kb-contrib.<sub>.workers.dev"
-const TURNSTILE_SITEKEY = "";   // Cloudflare Turnstile site key
+const PROXY_URL         = "https://dba-kb-contrib.dba-kb.workers.dev";   // Cloudflare Worker
+const TURNSTILE_SITEKEY = "0x4AAAAAADr6yGQ9r5WVpr5K";   // Cloudflare Turnstile site key
 const PROXY_ON = !!(PROXY_URL && TURNSTILE_SITEKEY);
 let   tsWidgetId = null;
 
