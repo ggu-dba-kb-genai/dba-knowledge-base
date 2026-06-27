@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contribute — DBA Knowledge Base</title>
+<meta name="description" content="Share your session notes, completed assignments, or class worksheets with the DBA Knowledge Base community.">
+<style>
+:root {
+  --bg: #f5f4ed; --bg2: #faf9f5; --bg3: #e8e6dc;
+  --border: #f0eee6; --border-warm: #e8e6dc;
+  --accent: #c96442; --accent2: #d97757;
+  --green: #2a6b42; --yellow: #9a6520; --red: #b53333;
+  --text: #141413; --muted: #5e5d59; --text3: #87867f; --text-light: #b0aea5;
+  --dark: #141413; --dark2: #30302e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: system-ui,-apple-system,sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4 { font-family: Georgia,'Anthropic Serif',serif; font-weight: 500; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
+.topnav { background: var(--dark2); padding: 13px 24px; display: flex; align-items: center; gap: 20px; }
+.topnav .logo { color: var(--text-light); font-family: Georgia,serif; font-size: 14px; flex: 1; text-decoration: none; }
+.topnav a { color: var(--text3); font-size: 13px; }
+.topnav a:hover { color: var(--text-light); text-decoration: none; }
+.topnav .cur { color: var(--accent2); }
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+.hero { background: var(--dark); padding: 60px 24px 52px; }
+.hero-inner { max-width: 860px; margin: 0 auto; }
+.eyebrow { font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--accent2); font-weight: 700; margin-bottom: 14px; }
+.hero h1 { color: #faf9f5; font-size: 38px; line-height: 1.12; max-width: 640px; margin-bottom: 14px; }
+.hero p { color: var(--text-light); font-size: 16px; max-width: 560px; line-height: 1.6; }
+
+/* ── Scope strip ─────────────────────────────────────────────────────────── */
+.scope { background: var(--bg2); border-bottom: 1px solid var(--border-warm); padding: 22px 24px; }
+.scope-inner { max-width: 860px; margin: 0 auto; display: flex; gap: 48px; flex-wrap: wrap; }
+.sc-col h4 { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.sc-col.in h4 { color: var(--green); }
+.sc-col.out h4 { color: var(--red); }
+.sc-col ul { list-style: none; }
+.sc-col li { font-size: 13px; color: var(--muted); line-height: 1.85; }
+.sc-col.in li::before { content: "✓ "; color: var(--green); font-weight: 700; }
+.sc-col.out li::before { content: "✗ "; color: var(--red); font-weight: 700; }
+
+/* ── Form shell ──────────────────────────────────────────────────────────── */
+main { padding: 40px 24px 80px; }
+.form-wrap { max-width: 680px; margin: 0 auto; }
+
+/* ── Step cards ──────────────────────────────────────────────────────────── */
+.step { background: var(--bg2); border: 1px solid var(--border-warm); border-radius: 12px; padding: 28px; margin-bottom: 20px; position: relative; }
+.step-num { position: absolute; top: -14px; left: 24px; width: 28px; height: 28px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+.step h3 { font-size: 17px; color: var(--text); margin-bottom: 4px; }
+.step .desc { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+
+/* ── Field primitives ────────────────────────────────────────────────────── */
+.field { margin-top: 18px; }
+.field:first-of-type { margin-top: 0; }
+label.lbl { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+input[type=text], input[type=email], select, textarea {
+  width: 100%; padding: 10px 13px; border: 1px solid var(--border-warm);
+  border-radius: 8px; font-size: 14px; font-family: inherit;
+  background: var(--bg); color: var(--text); transition: border-color .15s, box-shadow .15s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,100,66,.12);
+}
+textarea { resize: vertical; min-height: 200px; font-family: ui-monospace,'SF Mono',Menlo,monospace; font-size: 13px; line-height: 1.7; }
+.req { color: var(--red); }
+.ferr { font-size: 12px; color: var(--red); margin-top: 5px; display: none; }
+.ferr.show { display: block; }
+
+/* ── Type cards ──────────────────────────────────────────────────────────── */
+.type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+.topt input[type=radio] { display: none; }
+.topt label {
+  display: flex; flex-direction: column; align-items: center; padding: 14px 8px;
+  border: 2px solid var(--border-warm); border-radius: 10px; cursor: pointer;
+  font-size: 12px; color: var(--muted); background: var(--bg);
+  transition: all .15s; text-align: center; font-weight: 600; gap: 6px; user-select: none;
+  letter-spacing: .02em;
+}
+.topt label .ico { font-size: 20px; }
+.topt input:checked + label {
+  border-color: var(--accent); background: var(--bg2);
+  color: var(--text); box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs { display: flex; background: var(--bg3); border-radius: 8px; padding: 3px; gap: 2px; margin-bottom: 14px; }
+.tbtn { flex: 1; padding: 7px 14px; border: none; background: transparent; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); font-family: inherit; transition: all .15s; }
+.tbtn.on { background: var(--bg2); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+
+/* ── Drop zone ───────────────────────────────────────────────────────────── */
+.drop-zone {
+  border: 2px dashed var(--border-warm); border-radius: 10px; padding: 36px 20px;
+  text-align: center; cursor: pointer; transition: all .15s;
+}
+.drop-zone:hover, .drop-zone.over { border-color: var(--accent); background: var(--bg); }
+.dz-ico { font-size: 30px; margin-bottom: 6px; }
+.dz-text { font-size: 14px; color: var(--muted); }
+.dz-text span { color: var(--accent); }
+.dz-hint { font-size: 12px; color: var(--text3); margin-top: 4px; }
+.file-info { display: none; margin-top: 10px; padding: 9px 13px; background: var(--bg3); border-radius: 8px; font-size: 13px; color: var(--muted); align-items: center; gap: 8px; }
+.file-info.show { display: flex; }
+.fi-rm { margin-left: auto; background: none; border: none; cursor: pointer; color: var(--red); font-size: 12px; font-family: inherit; }
+
+/* ── Char counter ────────────────────────────────────────────────────────── */
+.char-ctr { text-align: right; font-size: 12px; color: var(--text3); margin-top: 5px; }
+.char-ctr.warn { color: var(--yellow); }
+.char-ctr.over { color: var(--red); font-weight: 700; }
+
+/* ── Dedup panel ─────────────────────────────────────────────────────────── */
+.dedup { display: none; margin-top: 14px; padding: 12px 14px; border-radius: 8px; font-size: 13px; }
+.dedup.loading { display: block; background: var(--bg3); color: var(--muted); }
+.dedup.ok  { display: block; background: #edf7f1; border: 1px solid #b0d8c0; color: var(--green); }
+.dedup.warn { display: block; background: #fffbef; border: 1px solid #e8d090; color: #7a5010; }
+.dm { margin-top: 8px; padding: 7px 10px; background: rgba(0,0,0,.04); border-radius: 6px; }
+.dm strong { color: var(--text); }
+.dm small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.dedup-note { margin-top: 8px; font-size: 12px; color: var(--muted); }
+
+/* ── Credit preview ──────────────────────────────────────────────────────── */
+.credit-preview { display: none; background: var(--bg3); border-radius: 8px; padding: 11px 14px; font-size: 13px; color: var(--muted); margin-top: 16px; }
+.credit-preview strong { color: var(--text); }
+
+/* ── Attribution ─────────────────────────────────────────────────────────── */
+.rights-row { display: flex; gap: 10px; align-items: flex-start; padding: 4px 0; }
+.rights-row input[type=checkbox] { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--accent); }
+.rights-row span { font-size: 14px; color: var(--muted); }
+
+/* ── Submit area ─────────────────────────────────────────────────────────── */
+.submit-area { text-align: center; padding: 8px 0 0; }
+.btn-sub {
+  padding: 14px 44px; background: var(--accent); color: #fff; border: none;
+  border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: box-shadow .15s, transform .06s;
+}
+.btn-sub:hover { box-shadow: 0 0 0 2px var(--accent), rgba(0,0,0,.2) 0 4px 16px; transform: translateY(-1px); }
+.btn-sub:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-sub.done { background: var(--green); }
+.sub-note { font-size: 13px; color: var(--text3); margin-top: 10px; }
+
+.what-next { background: var(--bg2); border: 1px solid var(--border-warm); border-radius: 10px; padding: 22px 24px; margin-top: 24px; text-align: left; }
+.what-next h4 { font-size: 15px; color: var(--text); margin-bottom: 10px; }
+.what-next ol { padding-left: 18px; }
+.what-next li { font-size: 13px; color: var(--muted); padding: 3px 0; }
+
+/* ── PDF note ────────────────────────────────────────────────────────────── */
+.pdf-note { display: none; margin-top: 10px; font-size: 13px; color: var(--muted); padding: 10px 13px; background: var(--bg3); border-radius: 7px; }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+footer { background: var(--bg); border-top: 1px solid var(--border-warm); padding: 28px 24px; color: var(--text3); font-size: 13px; }
+.footer-inner { max-width: 860px; margin: 0 auto; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+footer a { color: var(--muted); }
+
+@media (max-width: 620px) {
+  .hero h1 { font-size: 28px; }
+  .scope-inner { flex-direction: column; gap: 20px; }
+  .type-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav ─────────────────────────────────────────────────────────────────────── -->
+<nav class="topnav">
+  <a href="index.html" class="logo">DBA Knowledge Base</a>
+  <a href="index.html">Home</a>
+  <a href="map.html">Map</a>
+  <a href="ask.html">Ask the KB</a>
+  <a href="contribute.html" class="cur">Contribute</a>
+</nav>
+
+<!-- Hero ─────────────────────────────────────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Community · Open Knowledge</div>
+    <h1>Contribute to the DBA Knowledge Base</h1>
+    <p>Share your session notes, completed assignments, or class worksheets. Every contribution is reviewed, credited to you, and woven into the knowledge graph.</p>
+  </div>
+</header>
+
+<!-- Scope strip ──────────────────────────────────────────────────────────────── -->
+<div class="scope">
+  <div class="scope-inner">
+    <div class="sc-col in">
+      <h4>In scope</h4>
+      <ul>
+        <li>Session notes from DBA lectures</li>
+        <li>Your own completed assignments</li>
+        <li>Worksheets given in class</li>
+        <li>Session PDFs shared by GGU / UpGrad</li>
+        <li>Cohort group project outputs</li>
+      </ul>
+    </div>
+    <div class="sc-col out">
+      <h4>Out of scope</h4>
+      <ul>
+        <li>External articles, papers, blog posts</li>
+        <li>Reference book chapters or extracts</li>
+        <li>Content from other programs</li>
+        <li>Opinions not grounded in course material</li>
+        <li>AI-generated content you haven't reviewed</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Form ─────────────────────────────────────────────────────────────────────── -->
+<main>
+<div class="form-wrap">
+<form id="contrib-form" novalidate>
+
+  <!-- ── Step 1: About you ───────────────────────────────────────────────── -->
+  <div class="step">
+    <div class="step-num">1</div>
+    <h3>About you</h3>
+    <p class="desc">Your name appears in the knowledge base as credit for this contribution. Email is optional and only used if we need to follow up.</p>
+
+    <div class="field">
+      <label class="lbl" for="f-name">Your name <span class="req">*</span></label>
+      <input type="text" id="f-name" placeholder="e.g. Sanjay Gupta, Cohort 8" autocomplete="name">
+      <div class="ferr" id="err-name">Your name is required.</div>
+    </div>
+
+    <div class="field">
+      <label class="lbl" for="f-email">Email (optional)</label>
+      <input type="email" id="f-email" placeholder="your@email.com" autocomplete="email">
+    </div>
+
+    <div class="credit-preview" id="credit-preview">
+      Your credit in the KB: <strong>Contributed by <span id="cp-name">…</span></strong> · <span id="cp-type">…</span> · <span id="cp-course">…</span>
+    </div>
+  </div>
+
+  <!-- ── Step 2: Content type ────────────────────────────────────────────── -->
+  <div class="step">
+    <div class="step-num">2</div>
+    <h3>Content type</h3>
+    <p class="desc">Choose the category that best describes your contribution.</p>
+    <div class="type-grid">
+      <div class="topt">
+        <input type="radio" name="ctype" id="t-notes" value="Session Notes" checked>
+        <label for="t-notes"><span class="ico">📝</span>Session Notes</label>
+      </div>
+      <div class="topt">
+        <input type="radio" name="ctype" id="t-assign" value="Assignment">
+        <label for="t-assign"><span class="ico">📋</span>Assignment</label>
+      </div>
+      <div class="topt">
+        <input type="radio" name="ctype" id="t-sheet" value="Worksheet">
+        <label for="t-sheet"><span class="ico">🗂️</span>Worksheet</label>
+      </div>
+      <div class="topt">
+        <input type="radio" name="ctype" id="t-pdf" value="Session PDF">
+        <label for="t-pdf"><span class="ico">📄</span>Session PDF</label>
+      </div>
+      <div class="topt">
+        <input type="radio" name="ctype" id="t-other" value="Other">
+        <label for="t-other"><span class="ico">💡</span>Other</label>
+      </div>
+    </div>
+    <div class="field" id="other-wrap" style="display:none">
+      <label class="lbl" for="f-other">What is it and why does it belong in the DBA KB?</label>
+      <input type="text" id="f-other" placeholder="e.g. Group project output from C5 AI Project Design">
+    </div>
+  </div>
+
+  <!-- ── Step 3: Course & session ────────────────────────────────────────── -->
+  <div class="step">
+    <div class="step-num">3</div>
+    <h3>Course &amp; session</h3>
+    <p class="desc">Which course does this belong to? This links your contribution into the right part of the knowledge graph.</p>
+
+    <div class="field">
+      <label class="lbl" for="f-course">Course <span class="req">*</span></label>
+      <select id="f-course">
+        <option value="">— select a course —</option>
+        <option value="C1">C1 — Emerging Digital Technologies</option>
+        <option value="C2">C2 — Foundations of ML &amp; AI</option>
+        <option value="C3">C3 — Deep Learning</option>
+        <option value="C4">C4 — Generative AI &amp; Pretrained Models</option>
+        <option value="C5">C5 — AI Project Design</option>
+        <option value="C6">C6 — Responsible AI</option>
+        <option value="General">General / Cross-course</option>
+      </select>
+      <div class="ferr" id="err-course">Please select a course.</div>
+    </div>
+
+    <div class="field">
+      <label class="lbl" for="f-session">Session (optional)</label>
+      <input type="text" id="f-session" placeholder="e.g. Session 03 — AI Success Planning (21 June 2026)">
+    </div>
+  </div>
+
+  <!-- ── Step 4: Title & content ─────────────────────────────────────────── -->
+  <div class="step">
+    <div class="step-num">4</div>
+    <h3>Title &amp; content</h3>
+    <p class="desc">Give your contribution a clear title, then paste your content or upload a file.</p>
+
+    <div class="field">
+      <label class="lbl" for="f-title">Title <span class="req">*</span></label>
+      <input type="text" id="f-title" placeholder="e.g. C6 Assignment 1 — AI Ideation &amp; Prototype">
+      <div class="ferr" id="err-title">Title is required.</div>
+    </div>
+
+    <div class="field">
+      <div class="tabs">
+        <button type="button" class="tbtn on" data-tab="text">Paste text / markdown</button>
+        <button type="button" class="tbtn" data-tab="file">Upload file</button>
+      </div>
+
+      <!-- Text pane -->
+      <div id="pane-text">
+        <textarea id="f-content" placeholder="Paste your content here — markdown, plain text, or structured notes…&#10;&#10;Accepted: any readable text format."></textarea>
+        <div class="char-ctr" id="char-ctr">0 / 200,000 characters</div>
+        <div class="ferr" id="err-content"></div>
+        <div class="dedup" id="dedup-text"></div>
+      </div>
+
+      <!-- File pane -->
+      <div id="pane-file" style="display:none">
+        <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Upload file">
+          <input type="file" id="f-file" accept=".md,.txt,.pdf" style="display:none">
+          <div class="dz-ico">📎</div>
+          <div class="dz-text">Drop your file here, or <span>browse</span></div>
+          <div class="dz-hint">.md &nbsp;·&nbsp; .txt &nbsp;·&nbsp; .pdf &nbsp;·&nbsp; max 2 MB</div>
+        </div>
+        <div class="file-info" id="file-info">
+          <span id="fi-name"></span>
+          <span id="fi-size" style="color:var(--text3)"></span>
+          <button type="button" class="fi-rm" id="fi-rm">✕ Remove</button>
+        </div>
+        <div class="ferr" id="err-file"></div>
+        <div class="pdf-note" id="pdf-note">
+          ℹ️ Dedup check not available for PDF files. Please verify this content isn't already in the KB before submitting.
+        </div>
+        <div class="dedup" id="dedup-file"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 5: Attribution ─────────────────────────────────────────────── -->
+  <div class="step">
+    <div class="step-num">5</div>
+    <h3>Attribution</h3>
+    <p class="desc">Confirm you have the right to share this content. Your name will appear as the contributor in the knowledge base.</p>
+    <div class="rights-row">
+      <input type="checkbox" id="f-rights">
+      <span>I created this content myself, or I have the right to share it in this public knowledge base. I understand it will be publicly attributed to me.</span>
+    </div>
+    <div class="ferr" id="err-rights">You must confirm your rights before submitting.</div>
+  </div>
+
+  <!-- ── Submit ──────────────────────────────────────────────────────────── -->
+  <div class="submit-area">
+    <button type="submit" class="btn-sub" id="submit-btn">Submit for Review →</button>
+    <p class="sub-note">Opens a pre-filled GitHub issue — no GitHub account needed on your end.</p>
+
+    <div class="what-next">
+      <h4>What happens after you submit</h4>
+      <ol>
+        <li>A GitHub issue is created with your contribution details</li>
+        <li>The KB maintainer reviews scope, quality, and duplication (1–3 days)</li>
+        <li>If approved: the OKF pipeline structures, links, and indexes your content</li>
+        <li>Your contribution appears in the knowledge map, credited to you by name</li>
+      </ol>
+    </div>
+  </div>
+
+</form>
+</div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>DBA Knowledge Base — MIT + CC BY 4.0</div>
+    <div>
+      <a href="index.html">Home</a> ·
+      <a href="ask.html">Ask the KB</a> ·
+      <a href="map.html">Map</a> ·
+      <a href="https://github.com/ggu-dba-kb-genai/dba-knowledge-base">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="kb-tools.js"></script>
+<script>
+'use strict';
+
+// ── Config ────────────────────────────────────────────────────────────────────
+const REPO      = 'ggu-dba-kb-genai/dba-knowledge-base';
+const MAX_CHARS = 200_000;
+const MAX_FILE  = 2 * 1024 * 1024;   // 2 MB
+const DEBOUNCE  = 700;                // ms before dedup fires
+const RATE_KEY  = 'dba_kb_contrib';
+const RATE_MAX  = 5;                  // submissions per day
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let selectedFile = null;
+let kbReady      = false;
+let dedupTimer   = null;
+
+// ── KB load ───────────────────────────────────────────────────────────────────
+KB.load('kb-data.json').then(() => { kbReady = true; }).catch(() => {});
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const ctype = () => document.querySelector('input[name="ctype"]:checked')?.value || '';
+const activeTab = () => document.querySelector('.tbtn.on')?.dataset.tab || 'text';
+const fmt = b => b > 1024*1024 ? `${(b/1024/1024).toFixed(1)} MB` : `${Math.round(b/1024)} KB`;
+
+// ── Credit preview (live) ─────────────────────────────────────────────────────
+function refreshCredit() {
+  const name   = $('f-name').value.trim();
+  const course = $('f-course').value;
+  const type   = ctype();
+  const el     = $('credit-preview');
+  if (name) {
+    el.style.display = 'block';
+    $('cp-name').textContent   = name;
+    $('cp-type').textContent   = type   || '…';
+    $('cp-course').textContent = course || '…';
+  } else {
+    el.style.display = 'none';
+  }
+}
+$('f-name').addEventListener('input', refreshCredit);
+$('f-course').addEventListener('change', () => { refreshCredit(); scheduleDedup(); });
+$('f-title').addEventListener('input', scheduleDedup);
+document.querySelectorAll('input[name="ctype"]').forEach(r => r.addEventListener('change', () => {
+  $('other-wrap').style.display = ctype() === 'Other' ? 'block' : 'none';
+  refreshCredit();
+}));
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.tbtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tbtn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    $('pane-text').style.display = btn.dataset.tab === 'text' ? 'block' : 'none';
+    $('pane-file').style.display = btn.dataset.tab === 'file' ? 'block' : 'none';
+  });
+});
+
+// ── Char counter ──────────────────────────────────────────────────────────────
+$('f-content').addEventListener('input', () => {
+  const n  = $('f-content').value.length;
+  const el = $('char-ctr');
+  el.textContent = `${n.toLocaleString()} / 200,000 characters`;
+  el.className   = 'char-ctr' + (n > MAX_CHARS ? ' over' : n > 160_000 ? ' warn' : '');
+  scheduleDedup();
+});
+
+// ── Dedup ─────────────────────────────────────────────────────────────────────
+function scheduleDedup() {
+  clearTimeout(dedupTimer);
+  dedupTimer = setTimeout(() => runDedup(activeTab()), DEBOUNCE);
+}
+
+async function runDedup(src) {
+  const panel = $(src === 'text' ? 'dedup-text' : 'dedup-file');
+  const rawText = src === 'text'
+    ? $('f-content').value.trim()
+    : (selectedFile && selectedFile._text) || '';
+
+  if (!rawText || rawText.length < 80 || !kbReady) { panel.className = 'dedup'; return; }
+
+  // Build a focused query: title + first 600 chars of content
+  const title = $('f-title').value.trim();
+  const query = [title, rawText.slice(0, 600)].filter(Boolean).join(' ');
+
+  panel.className = 'dedup loading';
+  panel.textContent = '⟳ Checking KB for related content…';
+
+  try {
+    const r = KB.tools.search_knowledge_base({ query, limit: 3 });
+    if (!r.results.length) {
+      panel.className = 'dedup ok';
+      panel.textContent = '✓ No related content found in the current KB.';
+    } else {
+      panel.className = 'dedup warn';
+      let html = `⚠ Related content found in the KB — confirm your contribution adds something new:`;
+      for (const m of r.results) {
+        html += `<div class="dm"><strong>${esc(m.label)}</strong> <span style="color:var(--text3);font-size:11px;margin-left:4px">[${m.type}]</span>`;
+        if (m.snippet) html += `<small>${esc(m.snippet)}</small>`;
+        html += `</div>`;
+      }
+      html += `<p class="dedup-note">If your content adds new detail, a different angle, or is your own work — that's fine. Note it in your submission.</p>`;
+      panel.innerHTML = html;
+    }
+  } catch (e) {
+    panel.className = 'dedup';
+  }
+}
+
+// ── File upload ───────────────────────────────────────────────────────────────
+const dropZone = $('drop-zone');
+dropZone.addEventListener('click', () => $('f-file').click());
+dropZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') $('f-file').click(); });
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('over');
+  if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+});
+$('f-file').addEventListener('change', () => { if ($('f-file').files[0]) processFile($('f-file').files[0]); });
+$('fi-rm').addEventListener('click', clearFile);
+
+function processFile(file) {
+  clearFileErrors();
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  if (!['md','txt','pdf'].includes(ext)) {
+    showErr('err-file', 'Only .md, .txt, and .pdf files are accepted.');
+    return;
+  }
+  if (file.size > MAX_FILE) {
+    showErr('err-file', `File is ${fmt(file.size)} — maximum is 2 MB.`);
+    return;
+  }
+
+  selectedFile          = file;
+  $('fi-name').textContent = file.name;
+  $('fi-size').textContent = fmt(file.size);
+  $('file-info').classList.add('show');
+
+  if (ext === 'pdf') {
+    $('pdf-note').style.display = 'block';
+    $('dedup-file').className   = 'dedup';
+  } else {
+    $('pdf-note').style.display = 'none';
+    const reader = new FileReader();
+    reader.onload = ev => {
+      selectedFile._text = ev.target.result;
+      runDedup('file');
+    };
+    reader.readAsText(file);
+  }
+}
+
+function clearFile() {
+  selectedFile            = null;
+  $('f-file').value       = '';
+  $('file-info').classList.remove('show');
+  $('pdf-note').style.display = 'none';
+  $('dedup-file').className   = 'dedup';
+  clearFileErrors();
+}
+
+function clearFileErrors() {
+  $('err-file').className = 'ferr';
+  $('dedup-file').className = 'dedup';
+}
+
+// ── Error helpers ─────────────────────────────────────────────────────────────
+function showErr(id, msg) { $(id).textContent = msg; $(id).className = 'ferr show'; }
+function hideErr(id)      { $(id).className   = 'ferr'; }
+
+// ── Rate limit ────────────────────────────────────────────────────────────────
+function canSubmit() {
+  try {
+    const today = new Date().toDateString();
+    const data  = JSON.parse(localStorage.getItem(RATE_KEY) || '{}');
+    return !data.date || data.date !== today || (data.count || 0) < RATE_MAX;
+  } catch { return true; }
+}
+function recordSubmit() {
+  try {
+    const today = new Date().toDateString();
+    const data  = JSON.parse(localStorage.getItem(RATE_KEY) || '{}');
+    const count = data.date === today ? (data.count || 0) + 1 : 1;
+    localStorage.setItem(RATE_KEY, JSON.stringify({ date: today, count }));
+  } catch {}
+}
+
+// ── Validation ────────────────────────────────────────────────────────────────
+function validate() {
+  let ok = true;
+  ['err-name','err-course','err-title','err-content','err-file','err-rights'].forEach(hideErr);
+
+  if (!$('f-name').value.trim())    { showErr('err-name',   'Your name is required.'); ok = false; }
+  if (!$('f-course').value)         { showErr('err-course',  'Please select a course.'); ok = false; }
+  if (!$('f-title').value.trim())   { showErr('err-title',   'A title is required.'); ok = false; }
+  if (!$('f-rights').checked)       { showErr('err-rights',  'You must confirm your rights to this content.'); ok = false; }
+
+  if (activeTab() === 'text') {
+    const len = $('f-content').value.trim().length;
+    if (len < 50)       { showErr('err-content', 'Content must be at least 50 characters.'); ok = false; }
+    if (len > MAX_CHARS){ showErr('err-content', `Content too long (${len.toLocaleString()} chars — max 200,000).`); ok = false; }
+  } else {
+    if (!selectedFile)  { showErr('err-file', 'Please select a file to upload.'); ok = false; }
+  }
+  return ok;
+}
+
+// ── Build GitHub issue URL ─────────────────────────────────────────────────────
+function buildIssueUrl() {
+  const name    = $('f-name').value.trim();
+  const email   = $('f-email').value.trim();
+  const type    = ctype();
+  const course  = $('f-course').value;
+  const session = $('f-session').value.trim();
+  const title   = $('f-title').value.trim();
+  const other   = $('f-other').value.trim();
+
+  const issueTitle = `[CONTRIBUTION] ${type}: ${title}`;
+
+  let body = `## DBA Knowledge Base — Contribution\n\n`;
+  body += `| Field | Value |\n|---|---|\n`;
+  body += `| **Contributor** | ${name}${email ? ' (' + email + ')' : ''} |\n`;
+  body += `| **Type** | ${type}${type === 'Other' && other ? ' — ' + other : ''} |\n`;
+  body += `| **Course** | ${course} |\n`;
+  if (session) body += `| **Session** | ${session} |\n`;
+  body += `| **Title** | ${title} |\n`;
+  body += `| **Attribution** | ✅ Confirmed |\n\n---\n\n`;
+
+  if (activeTab() === 'text') {
+    const text  = $('f-content').value.trim();
+    const LIMIT = 8_000;
+    if (text.length <= LIMIT) {
+      body += `### Content\n\n${text}\n`;
+    } else {
+      body += `### Content (first 8,000 of ${text.length.toLocaleString()} characters)\n\n${text.slice(0, LIMIT)}\n\n`;
+      body += `> ⚠️ **Content was truncated.** Please attach a **.txt or .md file** with the full content using the attachment button below.\n`;
+    }
+  } else {
+    body += `### File\n\n`;
+    body += `📎 **${selectedFile.name}** (${fmt(selectedFile.size)})\n\n`;
+    body += `> ⬆️ **Please attach the file** to this issue using the paperclip / attachment button in the GitHub editor below.\n`;
+  }
+
+  return `https://github.com/${REPO}/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(body)}`;
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────────
+$('contrib-form').addEventListener('submit', e => {
+  e.preventDefault();
+  if (!validate()) {
+    document.querySelector('.ferr.show')?.closest('.step,form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  if (!canSubmit()) {
+    alert(`You have submitted ${RATE_MAX} contributions today. Please try again tomorrow.`);
+    return;
+  }
+
+  const url = buildIssueUrl();
+  recordSubmit();
+  window.open(url, '_blank');
+
+  const btn = $('submit-btn');
+  btn.textContent = '✓ GitHub issue opened — check the new tab';
+  btn.classList.add('done');
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Submit for Review →';
+    btn.classList.remove('done');
+    btn.disabled = false;
+  }, 6000);
+});
+</script>
+</body>
+</html>

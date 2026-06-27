@@ -1,0 +1,91 @@
+name: Content Contribution
+description: Submit session notes, assignments, or worksheets to the DBA Knowledge Base
+title: "[CONTRIBUTION] "
+labels: ["contribution", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Tip:** For the best experience — including automatic duplicate detection — use the
+        [Contribution Form](https://ggu-dba-kb-genai.github.io/dba-knowledge-base/contribute.html)
+        instead of filling this out manually.
+
+        **In scope:** Session notes · Assignments (your own) · Worksheets · Session PDFs from GGU/UpGrad · Group project outputs.
+        **Out of scope:** External articles · Book chapters · Content from other programs.
+
+  - type: input
+    id: contributor
+    attributes:
+      label: Your name (for attribution credit in the KB)
+      placeholder: "e.g. Sanjay Gupta, Cohort 8"
+    validations:
+      required: true
+
+  - type: input
+    id: email
+    attributes:
+      label: Email (optional — for follow-up only)
+      placeholder: "your@email.com"
+
+  - type: dropdown
+    id: content-type
+    attributes:
+      label: Content type
+      options:
+        - Session Notes
+        - Assignment
+        - Worksheet
+        - Session PDF
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: course
+    attributes:
+      label: Course
+      options:
+        - "C1 — Emerging Digital Technologies"
+        - "C2 — Foundations of ML & AI"
+        - "C3 — Deep Learning"
+        - "C4 — Generative AI & Pretrained Models"
+        - "C5 — AI Project Design"
+        - "C6 — Responsible AI"
+        - "General / Cross-course"
+    validations:
+      required: true
+
+  - type: input
+    id: session
+    attributes:
+      label: Session reference (optional)
+      placeholder: "e.g. Session 03 — AI Success Planning (21 June 2026)"
+
+  - type: input
+    id: title
+    attributes:
+      label: Contribution title
+      placeholder: "e.g. C6 Assignment 1 — AI Ideation & Prototype"
+    validations:
+      required: true
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Content (markdown or plain text)
+      description: Paste your content here. For PDFs, leave this empty and attach the file below.
+      placeholder: |
+        # Title
+
+        Your content here — session notes, assignment text, worksheet, etc.
+
+        Markdown is supported.
+    render: markdown
+
+  - type: checkboxes
+    id: attribution
+    attributes:
+      label: Attribution
+      options:
+        - label: I created this content myself or have the right to share it in this public knowledge base. I understand it will be publicly attributed to me.
+          required: true
