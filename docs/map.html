@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DBA Knowledge Map</title>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -395,7 +398,7 @@ main {
     </div>
     <div>
       <h1>DBA Knowledge Map</h1>
-      <span class="sub">6 courses · 118 nodes · 1,119 connections</span>
+      <span class="sub" id="hdr-sub">6 courses · 118 nodes · 1,121 connections</span>
     </div>
   </div>
   <div class="controls">
@@ -449,33 +452,33 @@ main {
       <div>
         <div class="section-head">Summary</div>
         <div class="stat-grid">
-          <div class="stat-card"><div class="n">6</div><div class="label">Courses</div></div>
-          <div class="stat-card"><div class="n">74</div><div class="label">Sessions</div></div>
-          <div class="stat-card"><div class="n">23</div><div class="label">Concepts</div></div>
-          <div class="stat-card"><div class="n">11</div><div class="label">Assignments</div></div>
+          <div class="stat-card"><div class="n" data-count="Course">6</div><div class="label">Courses</div></div>
+          <div class="stat-card"><div class="n" data-count="Session">74</div><div class="label">Sessions</div></div>
+          <div class="stat-card"><div class="n" data-count="Concept">23</div><div class="label">Concepts</div></div>
+          <div class="stat-card"><div class="n" data-count="Assignment">11</div><div class="label">Assignments</div></div>
         </div>
       </div>
       <div>
         <div class="section-head">Node types</div>
         <div class="legend-item" data-filter="Course">
           <span class="legend-dot" style="background:#c96442"></span>
-          Course <span class="legend-cnt">6 · click to expand</span>
+          Course <span class="legend-cnt"><span data-cnt="Course">6</span> · click to expand</span>
         </div>
         <div class="legend-item" data-filter="Session">
           <span class="legend-dot" style="background:#b8864e"></span>
-          Session <span class="legend-cnt">74 · hidden in overview</span>
+          Session <span class="legend-cnt"><span data-cnt="Session">74</span> · hidden in overview</span>
         </div>
         <div class="legend-item" data-filter="Concept">
           <span class="legend-dot diamond" style="background:#2a6b42"></span>
-          Concept <span class="legend-cnt">23 · always visible</span>
+          Concept <span class="legend-cnt"><span data-cnt="Concept">23</span> · always visible</span>
         </div>
         <div class="legend-item" data-filter="Reference">
           <span class="legend-dot square" style="background:#87867f"></span>
-          Reference <span class="legend-cnt">4</span>
+          Reference <span class="legend-cnt"><span data-cnt="Reference">4</span></span>
         </div>
         <div class="legend-item" data-filter="Assignment">
           <span class="legend-dot" style="background:#9a6520"></span>
-          Assignment <span class="legend-cnt">11 · always visible</span>
+          Assignment <span class="legend-cnt"><span data-cnt="Assignment">11</span> · always visible</span>
         </div>
       </div>
       <div>
@@ -742,8 +745,11 @@ const styles = [
       'target-arrow-color': '#cbc8bf',
       'target-arrow-shape': 'triangle',
       'curve-style': 'bezier',
-      opacity: 0.5,
+      opacity: 0.22,            /* visible-but-quiet at rest; focus mode lights the active neighbourhood */
       'arrow-scale': 0.6,
+      'transition-property': 'opacity, line-color, width',
+      'transition-duration': '160ms',
+      'transition-timing-function': 'ease-out',
     }
   },
   {
@@ -764,6 +770,27 @@ const styles = [
     selector: '.faded-e',
     style: { opacity: 0.05 }
   },
+  /* ── Focus mode: dim the field, light up the active neighbourhood ── */
+  {
+    selector: 'node.dim',
+    style: { opacity: 0.18, 'transition-property': 'opacity', 'transition-duration': '160ms', 'transition-timing-function': 'ease-out' }
+  },
+  {
+    selector: 'edge.dim',
+    style: { opacity: 0.03 }
+  },
+  {
+    selector: 'edge.lit',
+    style: {
+      opacity: 0.92, width: 2.2,
+      'line-color': '#c96442', 'target-arrow-color': '#c96442',
+      'arrow-scale': 0.75, 'z-index': 900,
+    }
+  },
+  {
+    selector: 'node.lit',
+    style: { 'z-index': 901 }
+  },
   {
     selector: '.srch-match',
     style: {
@@ -781,6 +808,8 @@ const styles = [
 ];
 
 // ── Init Cytoscape ────────────────────────────────────────────
+// fcose = far better force layout (less overlap); fall back to built-in cose if the CDN missed.
+try { if (window.cytoscapeFcose) cytoscape.use(window.cytoscapeFcose); } catch (e) {}
 const cy = cytoscape({
   container: document.getElementById('graph'),
   elements: elems,
@@ -848,6 +877,7 @@ function updateCtxBar() {
 
 document.getElementById('btn-back').addEventListener('click', () => {
   for (const c of [...expanded]) collapseCourse(c);
+  clearFocus();
   setTimeout(() => { cy.fit(cy.elements(':visible'), 50); drawMM(); }, 100);
 });
 
@@ -855,37 +885,60 @@ cy.on('tap', 'node[type = "Course"]', evt => {
   const id = evt.target.id();
   if (expanded.has(id)) {
     collapseCourse(id);
+    clearFocus();
     setTimeout(() => { cy.fit(cy.elements(':visible'), 60); drawMM(); }, 100);
   } else {
     expandCourse(id);
-    setTimeout(() => drawMM(), 300);
+    const course = cy.getElementById(id);
+    cy.animate({ fit: { eles: course.closedNeighborhood(':visible'), padding: 70 }, duration: 450, easing: 'ease-out-quint' });
+    focusNode(course);
+    setTimeout(() => drawMM(), 520);
   }
 });
 
 // ── Expand / Collapse all buttons ─────────────────────────────
 document.getElementById('btn-expand').addEventListener('click', () => {
-  cy.nodes('[type = "Course"]').forEach(c => {
-    if (!expanded.has(c.id())) expandCourse(c.id());
-  });
-  setTimeout(() => { cy.fit(cy.elements(':visible'), 40); drawMM(); }, 150);
+  cy.nodes('[type = "Session"]').style('display', 'element');
+  cy.nodes('[type = "Course"]').forEach(c => expanded.add(c.id()));
+  clearFocus();
+  runOverviewLayout({ fit: true });                 // proper global layout of all 118 nodes
+  updateCtxBar();
+  setTimeout(() => { cy.fit(cy.elements(':visible'), 40); drawMM(); }, 200);
 });
 
 document.getElementById('btn-collapse').addEventListener('click', () => {
   for (const c of [...expanded]) collapseCourse(c);
+  clearFocus();
   setTimeout(() => { cy.fit(cy.elements(':visible'), 50); drawMM(); }, 100);
 });
 
-// ── Initial layout (visible nodes only) ──────────────────────
-setTimeout(() => {
-  cy.nodes(':visible').layout({
-    name: 'cose',
-    animate: false, fit: true, padding: 60,
-    nodeRepulsion: () => 14000, nodeOverlap: 24,
-    idealEdgeLength: () => 85, edgeElasticity: () => 50,
-    gravity: 0.7, numIter: 900, randomize: false,
-  }).run();
-  setTimeout(drawMM, 300);
-}, 40);
+// ── Overview layout (visible nodes only) ─────────────────────
+function runOverviewLayout(opts) {
+  opts = opts || {};
+  const fit = opts.fit !== false, animate = !!opts.animate;
+  const base = { animate, animationDuration: 500, fit, padding: 60, nodeDimensionsIncludeLabels: true };
+  // fcose needs the EDGES in the collection (node-only degenerates ~23x tighter). Pass elements.
+  const eles = cy.elements(':visible');
+  const fcoseCfg = Object.assign({ name: 'fcose', quality: 'proof', randomize: true, packComponents: true,
+    nodeSeparation: 130, idealEdgeLength: 95, nodeRepulsion: 9000, edgeElasticity: 0.45,
+    gravity: 0.2, gravityRange: 3.8, numIter: 2500 }, base);
+  const coseCfg = Object.assign({ name: 'cose', nodeRepulsion: () => 14000, nodeOverlap: 24,
+    idealEdgeLength: () => 85, edgeElasticity: () => 50, gravity: 0.7, numIter: 900, randomize: false }, base);
+  // Select by trying fcose and catching — cytoscape throws synchronously on an unregistered layout.
+  try { eles.layout(fcoseCfg).run(); }
+  catch (e) { try { eles.layout(coseCfg).run(); } catch (e2) {} }
+}
+function applyCounts() {
+  const B = window.BUNDLE; if (!B || !B.nodes) return;
+  const c = {}; B.nodes.forEach(n => { const t = n.data.type; c[t] = (c[t] || 0) + 1; });
+  const nodes = B.nodes.length, edges = (B.edges || []).length;
+  const sub = document.getElementById('hdr-sub');
+  if (sub) sub.textContent = (c.Course||0) + ' courses · ' + nodes + ' nodes · ' + edges.toLocaleString() + ' connections';
+  document.querySelectorAll('[data-count]').forEach(el => { el.textContent = c[el.getAttribute('data-count')] || 0; });
+  document.querySelectorAll('[data-cnt]').forEach(el => { el.textContent = c[el.getAttribute('data-cnt')] || 0; });
+}
+applyCounts();
+setTimeout(() => { runOverviewLayout({ fit: true }); setTimeout(drawMM, 300); }, 40);
 
 // ── Detail panel ──────────────────────────────────────────────
 let activeTab = 'overview';
@@ -1023,16 +1076,20 @@ document.querySelectorAll('.tab-btn').forEach(b => {
 });
 
 // ── Node click ────────────────────────────────────────────────
-cy.on('tap', 'node', evt => showDetail(evt.target.id()));
-cy.on('tap', evt => { if (evt.target === cy) showDash(); });
+// ── Focus mode: light the active neighbourhood, dim the rest ───
+function focusNode(n) {
+  const hood = n.closedNeighborhood();          // n + neighbours + connecting edges
+  cy.elements().addClass('dim');
+  hood.removeClass('dim');
+  hood.edges().addClass('lit');
+  hood.nodes().addClass('lit');
+}
+function clearFocus() { cy.elements().removeClass('dim lit'); }
 
-// ── Hover ─────────────────────────────────────────────────────
-cy.on('mouseover', 'node', evt => {
-  const n = evt.target;
-  n.neighborhood('node').addClass('faded');
-  n.neighborhood('node').forEach(nb => nb.removeClass('faded'));
-});
-cy.on('mouseout', 'node', () => cy.nodes().removeClass('faded'));
+cy.on('tap', 'node', evt => { focusNode(evt.target); showDetail(evt.target.id()); });
+cy.on('tap', evt => { if (evt.target === cy) { clearFocus(); showDash(); } });
+cy.on('mouseover', 'node', evt => { if (!cy.$('node:selected').length) focusNode(evt.target); });
+cy.on('mouseout', 'node', () => { const s = cy.$('node:selected'); if (s.length) focusNode(s[0]); else clearFocus(); });
 
 // ── Search ────────────────────────────────────────────────────
 let srchTimer;
