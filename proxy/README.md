@@ -80,6 +80,14 @@ Create an empty **private** repo, e.g. `ggu-dba-kb-genai/dba-kb-contrib-inbox`, 
 `main` branch (one commit — a README is fine). This holds raw, unreviewed submissions
 and the review-queue issues.
 
+Then create the review-queue labels **in that repo** — GitHub silently drops labels
+that don't exist in the target repo, so without this every submission lands unlabeled
+and the `needs-review` queue won't filter:
+```bash
+gh label create contribution --repo ggu-dba-kb-genai/dba-kb-contrib-inbox --color 0e8a16 --description "Content contribution"
+gh label create needs-review  --repo ggu-dba-kb-genai/dba-kb-contrib-inbox --color fbca04 --description "Awaiting maintainer review"
+```
+
 ### 2. Create one fine-grained PAT
 GitHub → Settings → Developer settings → **Fine-grained tokens**:
 - Repo access: **only** `dba-kb-contrib-inbox`
@@ -159,6 +167,8 @@ curl -i -X POST http://localhost:8787 \
   into the public bundle, crediting the contributor by name.
 - Rotate `GH_TOKEN` before expiry (fine-grained max 1 year); revoke instantly if abused.
 - Prune the inbox repo periodically.
+- Concurrency: simultaneous file uploads race on the inbox branch ref; the loser gets a
+  `502` and can simply retry. Harmless at cohort volume — not worth engineering around.
 
 ## Status note
 This is real attack surface + operating burden (token rotation, inbox pruning,

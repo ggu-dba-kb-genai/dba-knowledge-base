@@ -248,10 +248,7 @@ async function createIssue(env, refid, c, fileLink) {
   md += `\n---\n\n`;
 
   if (fileLink) md += `### File\n\n📎 [\`${cell(c.file.name)}\`](${fileLink})\n\n`;
-  if (c.contentText) {
-    // Fence as a guard so user text can't fake the metadata table above.
-    md += `### Content\n\n${c.contentText}\n`;
-  }
+  if (c.contentText) md += `### Content\n\n${c.contentText}\n`;
 
   return gh(env, `/repos/${repo}/issues`, "POST", {
     title: issueTitle,
