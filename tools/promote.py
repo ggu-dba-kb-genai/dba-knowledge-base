@@ -306,12 +306,6 @@ def main():
 
     branch = f"promote/{refid}"
     orig = sh(["git", "-C", ROOT, "rev-parse", "--abbrev-ref", "HEAD"]).stdout.strip()
-    sh(["git", "-C", ROOT, "checkout", "-b", branch])
-    sh(["git", "-C", ROOT, "add", relpath, "tools/bundle.json", "docs/kb-data.json",
-        "docs/map.html", ".gitattributes"])
-    sh(["git", "-C", ROOT, "commit", "-q", "-m",
-        f"Promote contribution {refid}: {gen['title']}"])
-    sh(["git", "-C", ROOT, "push", "-u", "origin", branch])
     rel_lines = "\n".join(f"- [{cat[r]['label']}]({r}) ({cat[r]['type']})" for r in related)
     pr_body = (
         f"Promotes approved contribution `{refid}` (inbox issue #{sub['issue']}) into the knowledge base.\n\n"
@@ -325,11 +319,21 @@ def main():
         f"Merging publishes the node (Pages rebuilds). Reject by closing this PR.\n\n"
         f"🤖 Generated with [Claude Code](https://claude.com/claude-code)"
     )
-    pr = sh(["gh", "pr", "create", "--repo", PUBLIC_REPO, "--base", "main", "--head", branch,
-             "--title", f"Promote {refid}: {gen['title']}", "--body", pr_body])
-    sh(["git", "-C", ROOT, "checkout", orig])
-    print(f"✓ PR opened:\n{pr.stdout.strip()}")
-    print(f"  (working tree restored to '{orig}')")
+    # idempotent: drop any stale local branch left by a previous failed run
+    sh(["git", "-C", ROOT, "branch", "-D", branch], check=False)
+    try:
+        sh(["git", "-C", ROOT, "checkout", "-b", branch])
+        sh(["git", "-C", ROOT, "add", relpath, "tools/bundle.json", "docs/kb-data.json",
+            "docs/map.html", ".gitattributes"])
+        sh(["git", "-C", ROOT, "commit", "-q", "-m", f"Promote contribution {refid}: {gen['title']}"])
+        sh(["git", "-C", ROOT, "push", "-u", "--force-with-lease", "origin", branch])
+        pr = sh(["gh", "pr", "create", "--repo", PUBLIC_REPO, "--base", "main", "--head", branch,
+                 "--title", f"Promote {refid}: {gen['title']}", "--body", pr_body])
+        print(f"✓ PR opened:\n{pr.stdout.strip()}")
+    finally:
+        # always return to the original branch so a PR-step failure never strands you on promote/<refid>
+        sh(["git", "-C", ROOT, "checkout", orig], check=False)
+        print(f"  (working tree restored to '{orig}')")
 
 
 if __name__ == "__main__":
