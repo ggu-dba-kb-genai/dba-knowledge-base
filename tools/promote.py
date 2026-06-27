@@ -50,6 +50,15 @@ def slugify(s):
     s = re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
     return re.sub(r"-{2,}", "-", s) or "contribution"
 
+def fix_escapes(s):
+    """Some model outputs escape newlines/tabs as LITERAL backslash sequences inside the
+    JSON string. Repair only the pathological case (literal \\n dominates real newlines),
+    so well-formed output is left untouched."""
+    s = s or ""
+    if "\\n" in s and s.count("\n") < s.count("\\n"):
+        s = s.replace("\\r\\n", "\n").replace("\\n", "\n").replace("\\t", "\t")
+    return s
+
 
 # ── 1 · fetch the approved submission from the private inbox repo ────────────────
 def fetch_submission(refid):
@@ -227,8 +236,9 @@ def assemble(sub, gen, cat):
     }
     fm_text = yaml.safe_dump(fm, sort_keys=False, allow_unicode=True, width=88).strip()
     rel = related_section(related, cat, dir_abs)
+    body = fix_escapes(gen["body_markdown"]).strip()
     credit = f"---\n\n*Contributed by **{sub['contributor']}** · source ref `{sub['refid']}` · synthesised into OKF and reviewed before publication.*"
-    text = f"---\n{fm_text}\n---\n\n{gen['body_markdown'].strip()}\n\n{rel}\n\n{credit}\n"
+    text = f"---\n{fm_text}\n---\n\n{body}\n\n{rel}\n\n{credit}\n"
     return node_id, os.path.join(dir_abs, slug + ".md"), text, related
 
 
@@ -327,9 +337,14 @@ def main():
             "docs/map.html", ".gitattributes"])
         sh(["git", "-C", ROOT, "commit", "-q", "-m", f"Promote contribution {refid}: {gen['title']}"])
         sh(["git", "-C", ROOT, "push", "-u", "--force-with-lease", "origin", branch])
-        pr = sh(["gh", "pr", "create", "--repo", PUBLIC_REPO, "--base", "main", "--head", branch,
-                 "--title", f"Promote {refid}: {gen['title']}", "--body", pr_body])
-        print(f"✓ PR opened:\n{pr.stdout.strip()}")
+        existing = sh(["gh", "pr", "list", "--repo", PUBLIC_REPO, "--head", branch,
+                       "--state", "open", "--json", "url", "--jq", ".[0].url"], check=False).stdout.strip()
+        if existing:
+            print(f"✓ branch updated; existing PR: {existing}")
+        else:
+            pr = sh(["gh", "pr", "create", "--repo", PUBLIC_REPO, "--base", "main", "--head", branch,
+                     "--title", f"Promote {refid}: {gen['title']}", "--body", pr_body])
+            print(f"✓ PR opened:\n{pr.stdout.strip()}")
     finally:
         # always return to the original branch so a PR-step failure never strands you on promote/<refid>
         sh(["git", "-C", ROOT, "checkout", orig], check=False)
