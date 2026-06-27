@@ -151,6 +151,7 @@ textarea { resize: vertical; min-height: 200px; font-family: ui-monospace,'SF Mo
 
 /* ── Submit area ─────────────────────────────────────────────────────────── */
 .submit-area { text-align: center; padding: 8px 0 0; }
+.ts-widget { display: none; justify-content: center; margin-bottom: 14px; }
 .btn-sub {
   padding: 14px 44px; background: var(--accent); color: #fff; border: none;
   border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;
@@ -391,6 +392,7 @@ footer a { color: var(--muted); }
 
   <!-- ── Submit ──────────────────────────────────────────────────────────── -->
   <div class="submit-area">
+    <div id="ts-widget" class="ts-widget"></div>
     <button type="submit" class="btn-sub" id="submit-btn">Submit for Review →</button>
     <p class="sub-note">Opens a pre-filled GitHub issue. Posting it needs a free GitHub account (one-time).</p>
     <div class="sub-msg" id="sub-msg"></div>
@@ -425,6 +427,13 @@ footer a { color: var(--muted); }
 <script src="kb-tools.js"></script>
 <script>
 'use strict';
+
+// ── Phase-2 account-free proxy ─────────────────────────────────────────────────
+// Set BOTH to turn on no-account submission. Leave empty → GitHub-login (prefilled) flow.
+const PROXY_URL         = "";   // e.g. "https://dba-kb-contrib.<sub>.workers.dev"
+const TURNSTILE_SITEKEY = "";   // Cloudflare Turnstile site key
+const PROXY_ON = !!(PROXY_URL && TURNSTILE_SITEKEY);
+let   tsWidgetId = null;
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const REPO       = 'ggu-dba-kb-genai/dba-knowledge-base';
@@ -714,6 +723,10 @@ $('contrib-form').addEventListener('submit', e => {
   }
   if (!canSubmit()) { subMsg(`You've opened ${RATE_MAX} contributions today. Please continue tomorrow.`, 'err'); return; }
 
+  // Phase-2: account-free submission via the proxy (no GitHub login)
+  if (PROXY_ON) { submitViaProxy(); return; }
+
+  // Phase-1 fallback: open a pre-filled GitHub issue (needs login)
   const url = buildIssueUrl();
   recordSubmit();
   const win = window.open(url, '_blank');
@@ -725,6 +738,84 @@ $('contrib-form').addEventListener('submit', e => {
   subMsg('Almost there — in the new GitHub tab, attach any file, then click the green “Submit new issue” button (sign in if asked).');
   setTimeout(() => { btn.textContent = 'Submit for Review →'; btn.classList.remove('done'); btn.disabled = false; }, 7000);
 });
+
+
+// ── Phase-2 proxy: submission, Turnstile, mode-aware copy ───────────────────────
+function readFileB64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload  = () => res(String(r.result).split(',')[1] || '');
+    r.onerror = () => rej(new Error('file read failed'));
+    r.readAsDataURL(file);
+  });
+}
+
+function resetTurnstile() { try { if (window.turnstile && tsWidgetId != null) window.turnstile.reset(tsWidgetId); } catch (e) {} }
+
+async function submitViaProxy() {
+  const btn = $('submit-btn');
+  const token = (window.turnstile && tsWidgetId != null) ? window.turnstile.getResponse(tsWidgetId) : '';
+  if (!token) { subMsg('Please complete the “I’m human” check above the button, then submit again.', 'err'); return; }
+
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  try {
+    const payload = {
+      website: $('hp-website').value,
+      turnstileToken: token,
+      name: $('f-name').value.trim(),
+      email: $('f-email').value.trim(),
+      type: ctype(),
+      other: $('f-other').value.trim(),
+      course: $('f-course').value,
+      session: $('f-session').value.trim(),
+      title: $('f-title').value.trim(),
+      attribution: $('f-rights').checked,
+    };
+    if (activeTab() === 'text') {
+      payload.contentText = $('f-content').value.trim();
+    } else if (selectedFile) {
+      payload.file = { name: selectedFile.name, b64: await readFileB64(selectedFile) };
+      if (selectedFile._text) payload.contentText = selectedFile._text.slice(0, 200000); // md/txt: also inline for reviewer
+    }
+
+    const res  = await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.ok) {
+      recordSubmit();
+      btn.textContent = '✓ Submitted'; btn.classList.add('done');
+      subMsg(`Thank you — your contribution is in the review queue. Your reference: ${data.refid}.` + (payload.email ? ' We’ll follow up by email if anything’s needed.' : ' (Add an email next time if you’d like a follow-up.)'));
+      $('contrib-form').reset(); clearFile(); $('credit-preview').style.display = 'none';
+      $('dl-helper').classList.remove('show'); $('pii-text').className = 'pii';
+      $('dedup-text').className = 'dedup'; $('dedup-file').className = 'dedup';
+      resetTurnstile();
+      setTimeout(() => { btn.textContent = 'Submit for Review →'; btn.classList.remove('done'); btn.disabled = false; }, 9000);
+    } else {
+      subMsg(data.error || `Submission failed (HTTP ${res.status}). Please try again.`, 'err');
+      btn.textContent = 'Submit for Review →'; btn.disabled = false; resetTurnstile();
+    }
+  } catch (err) {
+    subMsg('Network error — please check your connection and try again.', 'err');
+    btn.textContent = 'Submit for Review →'; btn.disabled = false; resetTurnstile();
+  }
+}
+
+// Activate the account-free UI only when the proxy is configured.
+if (PROXY_ON) {
+  const lnSpan = document.querySelector('.login-note span:last-child');
+  if (lnSpan) lnSpan.innerHTML = '<b>No GitHub account needed.</b> Your submission goes straight to the project’s <b>private</b> review queue and you’ll get a reference ID. Nothing is public until a maintainer approves it.';
+  const sn = document.querySelector('.sub-note');
+  if (sn) sn.textContent = 'No GitHub account needed — submits straight to the private review queue.';
+  const step1 = document.querySelector('.what-next ol li:first-child');
+  if (step1) step1.innerHTML = 'Your contribution enters the maintainer’s <b>private</b> review queue with a reference ID';
+
+  $('ts-widget').style.display = 'flex';
+  const sc = document.createElement('script');
+  sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  sc.async = true; sc.defer = true;
+  sc.onload = () => { try { tsWidgetId = window.turnstile.render('#ts-widget', { sitekey: TURNSTILE_SITEKEY, theme: 'light' }); } catch (e) {} };
+  document.head.appendChild(sc);
+}
 </script>
 </body>
 </html>

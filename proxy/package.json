@@ -1,0 +1,14 @@
+{
+  "name": "dba-kb-contrib-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cloudflare Worker proxy for account-free contributions to the DBA Knowledge Base.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.80.0"
+  }
+}
