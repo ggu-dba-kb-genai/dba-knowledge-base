@@ -18,6 +18,7 @@ const TYPES   = ["Session Notes", "Assignment", "Worksheet", "Session PDF", "Oth
 const COURSES = ["C1", "C2", "C3", "C4", "C5", "C6", "General"];
 const MAX_TEXT = 200_000;
 const MAX_FILE = 2 * 1024 * 1024;
+const MAX_BODY = 3 * 1024 * 1024;   // JSON envelope ceiling (2 MB file ≈ 2.7 MB base64 + fields)
 const FILE_EXT = ["md", "txt", "pdf"];
 
 export default {
@@ -27,6 +28,12 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     if (request.method !== "POST")    return json({ error: "Method not allowed" }, 405, cors);
+
+    // Reject oversized bodies before parsing. Cheap DoS guard for honest clients;
+    // CF platform limits + validate() below are the real bounds (a client may omit
+    // Content-Length, so this is defense-in-depth, not the primary control).
+    const clen = parseInt(request.headers.get("Content-Length") || "0", 10);
+    if (clen > MAX_BODY) return json({ error: "Payload too large." }, 413, cors);
 
     // CORS allow-list (browser origin). Not a security boundary on its own.
     if (env.ALLOWED_ORIGIN && origin && origin !== env.ALLOWED_ORIGIN) {
@@ -155,7 +162,8 @@ function validate(b) {
     if (!FILE_EXT.includes(ext)) return { error: "File must be .md, .txt, or .pdf." };
     const b64 = String(b.file.b64).replace(/\s+/g, "");
     if (!/^[A-Za-z0-9+/]+={0,2}$/.test(b64)) return { error: "File payload is not valid base64." };
-    const bytes = Math.floor(b64.length * 3 / 4);
+    const pad = b64.endsWith("==") ? 2 : b64.endsWith("=") ? 1 : 0;
+    const bytes = Math.floor(b64.length * 3 / 4) - pad;
     if (bytes > MAX_FILE) return { error: "File exceeds the 2 MB limit." };
     file = { name: fname, b64 };
   }
