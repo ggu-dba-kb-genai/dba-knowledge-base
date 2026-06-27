@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture & Information Flow — DBA Knowledge Base</title>
+<meta name="description" content="How the DBA Knowledge Base works end to end: source → build → published site → a three-phase contribution loop (prefilled issue, account-free proxy, AI promotion agent) with human review gates.">
+<style>
+:root {
+  --bg: #f5f4ed; --bg2: #faf9f5; --bg3: #e8e6dc;
+  --border: #f0eee6; --border-warm: #e8e6dc;
+  --accent: #c96442; --accent2: #d97757;
+  --green: #2a6b42; --yellow: #9a6520; --red: #b53333;
+  --text: #141413; --muted: #5e5d59; --text3: #87867f; --text-light: #b0aea5;
+  --dark: #141413; --dark2: #30302e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: system-ui,-apple-system,sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4 { font-family: Georgia,'Anthropic Serif',serif; font-weight: 500; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 940px; margin: 0 auto; padding: 0 24px; }
+
+/* Nav */
+.topnav { background: var(--dark2); padding: 13px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.topnav .logo { color: var(--text-light); font-family: Georgia,serif; font-size: 14px; flex: 1; text-decoration: none; }
+.topnav a { color: var(--text3); font-size: 13px; }
+.topnav a:hover { color: var(--text-light); text-decoration: none; }
+.topnav .cur { color: var(--accent2); }
+
+/* Hero */
+.hero { background: var(--dark); padding: 60px 24px 52px; }
+.hero-inner { max-width: 940px; margin: 0 auto; padding: 0 24px; }
+.eyebrow { font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--accent2); font-weight: 700; margin-bottom: 14px; }
+.hero h1 { color: #faf9f5; font-size: 38px; line-height: 1.12; max-width: 720px; margin-bottom: 14px; }
+.hero p { color: var(--text-light); font-size: 16px; max-width: 620px; line-height: 1.6; }
+
+/* Phase status chips */
+.status { background: var(--bg2); border-bottom: 1px solid var(--border-warm); padding: 20px 0; }
+.status .wrap { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border-warm);
+  border-radius: 999px; padding: 8px 16px; font-size: 13px; color: var(--text); font-weight: 500; }
+.chip .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(42,107,66,.15); }
+.chip.future .dot { background: var(--text3); box-shadow: 0 0 0 3px rgba(135,134,127,.15); }
+.chip b { font-weight: 700; }
+.status .asof { margin-left: auto; font-size: 12px; color: var(--text3); }
+
+/* Sections */
+section { padding: 48px 0; }
+section h2 { color: var(--accent); font-size: 26px; margin-bottom: 8px; }
+section .sub { color: var(--muted); margin-bottom: 26px; max-width: 680px; }
+section + section { border-top: 1px solid var(--border); }
+
+/* Diagram card */
+.diagram-wrap { background: var(--dark); border-radius: 14px; padding: 26px 22px; overflow-x: auto;
+  box-shadow: rgba(0,0,0,.06) 0 4px 28px; }
+.diagram-wrap pre { font-family: ui-monospace,'SF Mono',Menlo,Consolas,monospace; font-size: 12px;
+  line-height: 1.5; color: var(--text-light); white-space: pre; }
+.legend-inline { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 16px; font-size: 13px; color: var(--muted); }
+.legend-inline span b { color: var(--text); }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 4px; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border-warm); vertical-align: top; }
+th { background: var(--bg3); color: var(--text); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; font-weight: 700; }
+td code { background: var(--bg3); padding: 2px 6px; border-radius: 5px; font-size: 12.5px; }
+.tag-live { color: var(--green); font-weight: 700; }
+.tag-future { color: var(--text3); font-weight: 700; }
+
+/* Gate cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 18px; }
+.card { background: var(--bg2); border: 1px solid var(--border-warm); border-radius: 12px; padding: 22px 24px; }
+.card .num { font-family: Georgia,serif; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 8px; }
+.card h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
+.card p { font-size: 14px; color: var(--muted); }
+
+/* Component list */
+.comp { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
+.comp .item { background: var(--bg2); border: 1px solid var(--border-warm); border-radius: 10px; padding: 18px 20px; border-left: 4px solid var(--accent); }
+.comp .item h4 { font-family: Georgia,serif; font-weight: 500; font-size: 16px; color: var(--text); margin-bottom: 5px; }
+.comp .item p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+.comp .item code { font-size: 12px; color: var(--accent); }
+.comp .item:nth-child(2){ border-left-color: var(--green); }
+.comp .item:nth-child(3){ border-left-color: var(--yellow); }
+.comp .item:nth-child(4){ border-left-color: var(--accent2); }
+.comp .item:nth-child(5){ border-left-color: #6b3a1a; }
+
+/* Footer */
+footer { background: var(--bg); border-top: 1px solid var(--border-warm); padding: 28px 24px; color: var(--text3); font-size: 13px; }
+.footer-inner { max-width: 940px; margin: 0 auto; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+footer a { color: var(--muted); }
+
+@media (max-width: 620px){ .hero h1 { font-size: 28px; } .diagram-wrap pre { font-size: 10.5px; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">DBA Knowledge Base</a>
+  <a href="index.html">Home</a>
+  <a href="map.html">Map</a>
+  <a href="ask.html">Ask the KB</a>
+  <a href="contribute.html">Contribute</a>
+  <a href="architecture.html" class="cur">Architecture</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">System Design · How it all fits together</div>
+    <h1>Architecture &amp; Information Flow</h1>
+    <p>From a single source of truth to a published, navigable knowledge graph — and a three-phase contribution loop that lets anyone add content, with human review at every gate.</p>
+  </div>
+</header>
+
+<div class="status">
+  <div class="wrap">
+    <span class="chip"><span class="dot"></span><b>Phase&nbsp;1</b>&nbsp;· GitHub-issue submission</span>
+    <span class="chip"><span class="dot"></span><b>Phase&nbsp;2</b>&nbsp;· Account-free proxy</span>
+    <span class="chip"><span class="dot"></span><b>Phase&nbsp;3</b>&nbsp;· AI promotion agent</span>
+    <span class="asof">all live · verified 2026-06-27</span>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>The whole loop</h2>
+    <p class="sub">Source builds the graph; the graph powers the site; people read it and contribute back; you approve; the agent promotes — and it's live again. One closed loop.</p>
+    <div class="diagram-wrap">
+<pre>
+              DBA KNOWLEDGE BASE — ARCHITECTURE &amp; INFORMATION FLOW   (all phases LIVE)
+
+  LEGEND:   [LIVE]   [FUTURE]      ──► data flow      ═╌► deliberate human gate
+
+
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║ 1 · SOURCE OF TRUTH        git repo  bundle/*.md                          [LIVE]   ║
+║   6 courses · 74 sessions · 23 concepts · 4 references · 11 assignments = 118 nodes ║
+║   each node = Markdown + YAML front-matter, cross-linked by relative .md paths      ║
+╚════════════════════════════════════════╤═══════════════════════════════════════════╝
+                                          │  tools/build_bundle.py  (md → parse → edges)
+                                          ▼
+                            ┌───────────────────────────────┐
+                            │  bundle.json  {nodes, edges,  │  [LIVE]  118 nodes / 1,121 edges
+                            │   bodies, types, palette}     │
+                            └──────┬─────────────────┬──────┘
+                 tools/gen_viz_v2  │                 │  copied →  docs/kb-data.json
+                                   ▼                 ▼
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║ 2 · PUBLISHED SITE       GitHub Pages (static, served from docs/)         [LIVE]   ║
+║   index.html · map.html (Cytoscape graph) · okf-explained · vision                 ║
+║   ask.html  ──►  kb-tools.js  (8 read-only tools)  ──►  tutor backends:            ║
+║                  search·node·related·outline·concept·rubric·path·cite              ║
+║                  1. BYO Gemini key  →  2. on-device Nano  →  3. keyword search      ║
+║   contribute.html ──► the intake form (dedup · size · PII · honeypot)              ║
+╚════════════════════════════════════════╤═══════════════════════════════════════════╝
+                                          │
+        ════════════════  CONTRIBUTION  →  REVIEW  →  PROMOTE  LOOP  ════════════════
+                                          │
+   CONTRIBUTOR fills contribute.html      ▼
+        │
+        ├──── PHASE 1 ─────────────────────────────────────────────────────  [LIVE]
+        │   pre-filled GitHub issue  ═╌►  signs in, clicks Submit
+        │        └─►  PUBLIC repo issue (labels: contribution, needs-review)
+        │
+        └──── PHASE 2 · account-free ──────────────────────────────────────  [LIVE]
+            Turnstile CAPTCHA
+                 │  POST (JSON + file as base64)
+                 ▼
+            Cloudflare Worker   dba-kb-contrib.dba-kb.workers.dev
+              fail-closed captcha · per-IP rate-limit · validate · sanitize
+                 │  one scoped token (cannot touch main)
+                 ▼
+            PRIVATE inbox repo   dba-kb-contrib-inbox
+              · issue (review queue)   · raw file → inbox/&lt;refid&gt;/&lt;file&gt;
+              · returns reference ID   (nothing public yet)
+                                          │
+                                          ▼
+        ┌─────────────────────────────────────────────────────────────────────────┐
+        │  REVIEW GATE      you read the inbox issue + file        ═╌►   [LIVE]     │
+        │  approve (run the agent)   ·   reject (close the issue)                   │
+        └───────────────────────────────┬─────────────────────────────────────────┘
+                                         │  approve
+                                         ▼
+        ┌──── PHASE 3 · promotion agent ──  tools/promote.py  ──────────  [LIVE] ──┐
+        │  fetch issue+file ─► catalogue of 118 node ids ─► Gemini 3.5-flash       │
+        │  (PDF inline/multimodal) ─► STRICT JSON {title,desc,tags,body,related}    │
+        │  ─► validate (links ⊆ catalogue, never invent) ─► synthesise (not copy)  │
+        │  ─► write bundle/&lt;dir&gt;/&lt;slug&gt;.md ─► rebuild (+1-node assertion)          │
+        │  ─► branch + PR on the public repo                                       │
+        └───────────────────────────────┬─────────────────────────────────────────┘
+                                         │  PR
+                                         ▼
+        ┌─────────────────────────────────────────────────────────────────────────┐
+        │  MERGE GATE      you review the PR's .md node, click Merge   ═╌►  [LIVE]  │
+        └───────────────────────────────┬─────────────────────────────────────────┘
+                                         │  merge
+                                         ▼
+                       back to  ①  SOURCE  →  Pages rebuilds  →  live in map + tutor
+                       (loop closed — contributor credited by name)
+
+
+  [FUTURE]  optional GitHub Action: trigger promote.py on an `approved` label →
+            unattended drafting (you'd still merge the PR). Build only when volume justifies.
+</pre>
+    </div>
+    <div class="legend-inline">
+      <span><b>──►</b> data flow</span>
+      <span><b>═╌►</b> deliberate human gate</span>
+      <span><b>[LIVE]</b> built &amp; operational</span>
+      <span><b>[FUTURE]</b> optional, deferred</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What's live</h2>
+    <p class="sub">Every phase is built, deployed, and verified. The only deferred item is unattended automation — deliberately, until contribution volume justifies it.</p>
+    <table>
+      <thead><tr><th>Stage</th><th>Status</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td><b>Source → build → site</b></td><td><span class="tag-live">LIVE</span></td><td><code>bundle/*.md</code> → <code>build_bundle.py</code> → <code>bundle.json</code> → <code>gen_viz_v2.py</code> → <code>map.html</code>, served on GitHub Pages.</td></tr>
+        <tr><td><b>Ask the KB (tutor)</b></td><td><span class="tag-live">LIVE</span></td><td>8 read-only tools in <code>kb-tools.js</code>; backends fall back BYO-key → on-device → keyword search.</td></tr>
+        <tr><td><b>Phase 1 — issue submission</b></td><td><span class="tag-live">LIVE</span></td><td>The form pre-fills a GitHub issue on the public repo. Needs a GitHub login.</td></tr>
+        <tr><td><b>Phase 2 — account-free proxy</b></td><td><span class="tag-live">LIVE</span></td><td>Turnstile → Cloudflare Worker → <b>private</b> inbox repo (issue + raw file). No login; nothing public until approved.</td></tr>
+        <tr><td><b>Phase 3 — promotion agent</b></td><td><span class="tag-live">LIVE</span></td><td><code>tools/promote.py</code> synthesises an approved submission into an OKF node (Gemini 3.5-flash) and opens a PR.</td></tr>
+        <tr><td><b>Unattended automation</b></td><td><span class="tag-future">FUTURE</span></td><td>An optional GitHub Action to run the agent on an <code>approved</code> label — you'd still merge the PR.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The two human gates</h2>
+    <p class="sub">Everything between these is automated. The gates are deliberate — content is published only when a person decides.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="num">Gate 1 · Review</div>
+        <h3>Approve the submission</h3>
+        <p>You read the inbox issue and its file in the <b>private</b> repo. Approve by running the promotion agent; reject by closing the issue. Nothing reaches the public KB at this stage.</p>
+      </div>
+      <div class="card">
+        <div class="num">Gate 2 · Merge</div>
+        <h3>Merge the pull request</h3>
+        <p>The agent drafts a PR with the synthesised node (regenerated artifacts collapsed in the diff). You review the Markdown node and merge — the merge is what publishes. Pages rebuilds and it's live.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Components</h2>
+    <p class="sub">Five moving parts, each with a single responsibility.</p>
+    <div class="comp">
+      <div class="item"><h4>Source &amp; build</h4><p>OKF Markdown in <code>bundle/</code> → graph JSON via <code>build_bundle.py</code>; the map via <code>gen_viz_v2.py</code>.</p></div>
+      <div class="item"><h4>Published site</h4><p>Static GitHub Pages — home, knowledge map, the AI tutor, and the contribution form.</p></div>
+      <div class="item"><h4>Account-free proxy</h4><p>A Cloudflare Worker behind Turnstile that records submissions into a private inbox using one scoped token.</p></div>
+      <div class="item"><h4>Private inbox</h4><p>A separate private repo holding the review queue (issues) and raw uploads under <code>inbox/&lt;refid&gt;/</code>.</p></div>
+      <div class="item"><h4>Promotion agent</h4><p><code>tools/promote.py</code> — synthesises approved content into a cross-linked node and opens a PR for approval.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>DBA Knowledge Base — MIT + CC BY 4.0</div>
+    <div>
+      <a href="index.html">Home</a> ·
+      <a href="map.html">Map</a> ·
+      <a href="ask.html">Ask the KB</a> ·
+      <a href="contribute.html">Contribute</a> ·
+      <a href="https://github.com/ggu-dba-kb-genai/dba-knowledge-base">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
