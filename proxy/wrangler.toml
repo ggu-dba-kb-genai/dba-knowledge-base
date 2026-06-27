@@ -16,4 +16,4 @@ RATE_MAX_MIN   = "2"
 # then paste the returned id below.
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id      = "REPLACE_WITH_KV_NAMESPACE_ID"
+id      = "0ce6f1fa98db4ca28c27f260a3b888af"
