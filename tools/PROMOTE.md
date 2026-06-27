@@ -13,7 +13,7 @@ private inbox repo                      tools/promote.py  (local, your machine)
    ┌───────────────────────────────────────────────────────────────┐
    │ 1 fetch submission (metadata + text and/or file bytes)         │
    │ 2 build catalogue of existing node ids/labels/types           │
-   │ 3 Gemini 2.5-flash → STRICT JSON {title,description,tags,      │
+   │ 3 Gemini 3.5-flash → STRICT JSON {title,description,tags,      │
    │     body_markdown, related_ids[]}   (PDF sent inline/multimodal)│
    │ 4 validate: json, type→dir, related_ids ⊆ catalogue, slug uniq │
    │ 5 assemble bundle/<dir>/<slug>.md  (front-matter + body +      │
@@ -72,7 +72,7 @@ python tools/promote.py 20260627-6217b4
 python tools/promote.py 20260627-6217b4 --no-pr
 ```
 Defaults: `INBOX_REPO=ggu-dba-kb-genai/dba-kb-contrib-inbox`,
-`PUBLIC_REPO=ggu-dba-kb-genai/dba-knowledge-base`, `MODEL=gemini-2.5-flash`
+`PUBLIC_REPO=ggu-dba-kb-genai/dba-knowledge-base`, `MODEL=gemini-3.5-flash`
 (override via env).
 
 ## After merge

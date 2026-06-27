@@ -23,7 +23,7 @@ MAP_HTML    = os.path.join(ROOT, "docs", "map.html")
 
 INBOX_REPO  = os.environ.get("INBOX_REPO",  "ggu-dba-kb-genai/dba-kb-contrib-inbox")
 PUBLIC_REPO = os.environ.get("PUBLIC_REPO", "ggu-dba-kb-genai/dba-knowledge-base")
-MODEL       = os.environ.get("MODEL", "gemini-2.5-flash")
+MODEL       = os.environ.get("MODEL", "gemini-3.5-flash")
 KEY         = os.environ.get("GEMINI_API_KEY") or os.environ.get("GEMINI_KEY") or os.environ.get("GOOGLE_API_KEY")
 
 # submission content-type → (OKF type, bundle subdir)
