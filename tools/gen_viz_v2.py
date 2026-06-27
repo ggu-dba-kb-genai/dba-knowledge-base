@@ -12,6 +12,7 @@ HEAD = r'''<!DOCTYPE html>
 <title>DBA Knowledge Map</title>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -969,7 +970,9 @@ function renderOverview(d, nid) {
   const bodyEl = document.getElementById('md-body');
   if (hasBody && typeof marked !== 'undefined') {
     try {
-      bodyEl.innerHTML = marked.parse(bodyMd, { gfm: true, breaks: false });
+      const __html = marked.parse(bodyMd, { gfm: true, breaks: false });
+      if (typeof DOMPurify !== 'undefined') bodyEl.innerHTML = DOMPurify.sanitize(__html);
+      else bodyEl.textContent = bodyMd;   // fail CLOSED: no sanitizer -> plain text, never raw HTML
     } catch (e) {
       bodyEl.textContent = bodyMd;
     }
