@@ -1,0 +1,6 @@
+# Rendered output — reproducible from this source; deployed copy lives in docs/assets/
+kb-explainer.mp4
+
+# Tooling / caches
+node_modules/
+.hyperframes/
