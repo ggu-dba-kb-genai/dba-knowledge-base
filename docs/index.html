@@ -56,6 +56,20 @@
   .btn-ghost { background: transparent; color: var(--text-light); box-shadow: inset 0 0 0 1px var(--dark2); }
   .btn-ghost:hover { box-shadow: inset 0 0 0 1px var(--text3); color: #faf9f5; }
 
+  /* Intro video — executive overview */
+  .intro-video { background: var(--bg); padding: 50px 0 10px; }
+  .intro-video .vlabel {
+    text-align: center; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 16px;
+  }
+  .intro-video .frame { max-width: 880px; margin: 0 auto; }
+  .intro-video video {
+    width: 100%; display: block; border-radius: 14px;
+    border: 1px solid var(--border-warm); background: var(--bg);
+    box-shadow: rgba(0,0,0,.06) 0 6px 30px;
+  }
+  .intro-video .vcap { text-align: center; color: var(--muted); font-size: 13px; margin-top: 14px; }
+
   /* Stats strip */
   .stats {
     background: var(--bg2); border-bottom: 1px solid var(--border-warm);
@@ -134,6 +148,19 @@
     </div>
   </div>
 </header>
+
+<div class="intro-video">
+  <div class="wrap">
+    <div class="vlabel">Start here · 75-second overview</div>
+    <div class="frame">
+      <video controls preload="metadata" playsinline poster="assets/kb-explainer-poster.jpg">
+        <source src="assets/kb-explainer.mp4" type="video/mp4">
+        Your browser can’t play this video. <a href="assets/kb-explainer.mp4">Download the overview</a>.
+      </video>
+      <p class="vcap">A narrated tour of the knowledge base — for our DBA cohort. Built entirely from member contributions.</p>
+    </div>
+  </div>
+</div>
 
 <div class="stats">
   <div class="wrap">
