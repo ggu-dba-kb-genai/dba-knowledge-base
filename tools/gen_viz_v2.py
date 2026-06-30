@@ -278,6 +278,15 @@ main {
 
 /* ── Rendered markdown body ── */
 .meta-strip { margin-bottom: 16px; }
+.concept-audio {
+  background: var(--bg3); border-radius: 8px;
+  padding: 12px 14px; margin-bottom: 14px;
+  border: 1px solid var(--border-warm);
+}
+.audio-label { font-size: 12px; font-weight: 600; color: var(--muted);
+  letter-spacing:.04em; margin-bottom:4px; }
+.audio-credit { font-size: 11px; color: var(--text3); margin-top: 4px; }
+audio { height: 32px; }
 .meta-divider {
   height: 1px; background: var(--border-warm);
   margin: 4px 0 16px;
@@ -948,6 +957,12 @@ function applyCounts() {
 applyCounts();
 setTimeout(() => { runOverviewLayout({ fit: true }); setTimeout(drawMM, 300); }, 40);
 
+// ── Deep-link: map.html?node=concepts/agentic-ai-autonomous-systems ──
+(function() {
+  const nl = new URLSearchParams(location.search).get('node');
+  if (nl && NI[nl]) { setTimeout(() => { cy.nodes(`[id="${nl}"]`).select(); showDetail(nl); }, 600); }
+})();
+
 // ── Detail panel ──────────────────────────────────────────────
 let activeTab = 'overview';
 
@@ -1014,9 +1029,18 @@ function renderOverview(d, nid) {
   const bodyMd = (window.BUNDLE.bodies && window.BUNDLE.bodies[nid]) || '';
   const hasBody = bodyMd.trim().length > 0;
 
+  const audioHtml = d.audio ? (
+    '<div class="concept-audio">' +
+    '<div class="audio-label">🎙 Listen to an overview</div>' +
+    '<audio controls preload="none" style="width:100%">' +
+    `<source src="${esc(d.audio)}" type="audio/mpeg"></audio>` +
+    (d.audio_credit ? `<div class="audio-credit">Narrated by ${esc(d.audio_credit)}</div>` : '') +
+    '</div>') : '';
+
   pane.innerHTML =
     (meta ? `<div class="meta-strip">${meta}</div>` : '') +
-    (hasBody && meta ? '<div class="meta-divider"></div>' : '') +
+    audioHtml +
+    (hasBody && (meta || d.audio) ? '<div class="meta-divider"></div>' : '') +
     '<div class="md-body" id="md-body"></div>';
 
   // ── Render full markdown body ──

@@ -12,6 +12,8 @@ tags:
 - CrewAI
 - N8N
 timestamp: '2026-06-20T06:42:04+00:00'
+audio: "assets/audio/concept-agentic-ai-autonomous-systems.mp3"
+audio_credit: "Sanjay Gupta"
 ---
 
 # Definition

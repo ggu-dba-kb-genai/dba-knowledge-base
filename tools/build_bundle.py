@@ -116,6 +116,8 @@ def build(root):
             "description": str(fm.get("description") or ""),
             "resource": str(fm.get("resource") or ""),
             "tags": [str(t) for t in tags],
+            "audio": str(fm.get("audio") or ""),
+            "audio_credit": str(fm.get("audio_credit") or ""),
             "body": body or "",
             "links_to": _extract_links(body or "", os.path.dirname(path), root),
         })
@@ -131,6 +133,8 @@ def build(root):
             "description": c["description"],
             "resource": c["resource"],
             "tags": c["tags"],
+            "audio": c["audio"],
+            "audio_credit": c["audio_credit"],
             "color": color,
             "size": 30 + min(60, len(c["body"]) // 200),
         }})
